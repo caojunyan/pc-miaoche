@@ -81,7 +81,7 @@ export default {
       cars:"",
       baseImg:"https://api.miaoche168.com/",
       nextUrlBase:"",
-      currentPage:2,
+      currentPage:1,
       totalPage:'',
       nextUrl:'',
       total:0,

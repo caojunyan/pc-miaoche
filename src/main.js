@@ -4,10 +4,11 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueLazyLoad from 'vue-lazyload'
-import { Pagination } from 'element-ui';
+import { Pagination,Icon } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.prototype.$ELEMENT = { size: 'big' };
 Vue.use( Pagination)
+Vue.use( Icon)
 Vue.use(VueLazyLoad,{
   error:'./static/error.png',
   loading:'./static/loading.png'

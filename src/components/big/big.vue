@@ -2,6 +2,7 @@
   <div class="magnify">
     <div class="preview-box" @mousemove="move($event)"  @mouseout="out" ref="previewBox">
       <img width="100%" :src="previewImg" alt="">
+      <img src="./hot.png" alt="" class="hot">
       <div class="hover-box" ref="hoverBox"></div>
     </div>
     <div class="zoom-box" v-show="zoomVisiable" ref="zoomBox">
@@ -98,11 +99,17 @@
 <style lang="stylus" scoped>
   .magnify
     position: relative
+    width 100%
     .preview-box
       width: 480px
       height: 480px
-      border: 1px solid #dededd
       position: relative
+      margin  0 auto
+      .hot
+        position absolute
+        top 60px
+        left 20px
+        width 63px
       &:hover .hover-box
         display: block
       .hover-box
@@ -112,7 +119,6 @@
         top: 0
         width: 100px
         height: 100px
-        border: 1px solid #545454
         background: url('https://img-tmdetail.alicdn.com/tps/i4/T12pdtXaldXXXXXXXX-2-2.png') repeat 0 0
         cursor: move
         user-select: none
@@ -121,7 +127,7 @@
       height: 480px
       overflow: hidden
       position: absolute
-      left: 485px
+      left: 610px
       top: 0
       img
         position: absolute

@@ -20,4 +20,10 @@
 <style>
 @import "common/style/reset.css";
 @import "./common/style/base.css";
+ul,li,p,h1,h2,h3,h4,h5,h6,dl,dt,dd {
+  margin:0px;
+  padding:0px;
+  border:none;
+  list-style:none;
+}
 </style>
