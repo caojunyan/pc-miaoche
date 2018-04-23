@@ -57,7 +57,7 @@
               this.searchCars=res.data
               this.$emit('child-say',this.searchCars)
             }).catch(err=>{
-
+              console.log(err)
             })
           }
         }

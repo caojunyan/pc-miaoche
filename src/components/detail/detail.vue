@@ -241,14 +241,14 @@
           </p>
         </div>
       </div>
-      <div class="one">
-        <img src="./one-img.png" alt="">
+      <div class="one two">
         <div>
           <b>时尚驾驶座</b>
           <p>
             接近于自然光线的月光白氛围灯，能更好的还原内饰材质的真实质感，同时打造宁静柔和的座舱氛围。
           </p>
         </div>
+        <img src="./one-img.png" alt="">
       </div>
       <div class="one">
         <img src="./one-img.png" alt="">
@@ -259,6 +259,100 @@
           </p>
         </div>
       </div>
+    </div>
+    <!--比较-->
+    <div class="compare container">
+      <div class="miao">
+        <h4>在秒车网买车</h4>
+        <div class="advantage">
+          <b>首付低</b>
+          <p>低至０首付</p>
+          <p> 包购置税，送首年保险</p>
+          <p>免验车费，装饰费等杂费 杂费</p>
+        </div>
+        <div class="advantage">
+          <b>月供低</b>
+          <p>首年抵月供，还款无压力</p>
+        </div>
+        <div class="advantage">
+          <b>门槛低放贷快</b>
+          <p>在线审核，简单快捷</p>
+          <p>最快1小时审批，高通过率</p>
+        </div>
+
+      </div>
+      <div class="other">
+        <h4>其他贷款买车</h4>
+        <div class="disadvantage">
+          <b>首付高</b>
+          <p>首付3成起</p>
+          <p>另购购置税，保险</p>
+          <p> 以及验车费，装饰费等杂费</p>
+        </div>
+        <div class="disadvantage">
+          <b>月供高</b>
+          <p>每月还款压力大，造成资金紧张。</p>
+        </div>
+        <div class="disadvantage">
+          <b>门槛高放贷慢</b>
+          <p>各种纸质证明，流程复杂</p>
+          <p>  审批时间长，通过率低</p>
+        </div>
+      </div>
+      <img src="./vs.png" alt="">
+    </div>
+    <!--购车流程-->
+    <div class="process container">
+        <h1>购车流程</h1>
+       <div class="pro">
+         <div class="step">
+           <dl>
+             <dt>
+               <img src="./yuyue.png" alt="">
+             </dt>
+             <dd>
+               <b>在线预约</b>
+               <p>留下您的联系方式和看车时间，预约成功后销售会与您联系。</p>
+             </dd>
+           </dl>
+         </div>
+         <img src="./next.png" alt="">
+         <div class="step">
+           <dl>
+             <dt>
+               <img src="./xinyong.png" alt="">
+             </dt>
+             <dd>
+               <b>信用评估</b>
+               <p>秒车网工作人员会即时与您取得联系，并对根据您的信用来评估购车方案。</p>
+             </dd>
+           </dl>
+         </div>
+         <img src="./next.png" alt="">
+         <div class="step">
+           <dl>
+             <dt>
+               <img src="./xieyi.png" alt="">
+             </dt>
+             <dd>
+               <b>签订协议</b>
+               <p>秒车网工作人员会与您签订购车协议，并核实相关个人信息。</p>
+             </dd>
+           </dl>
+         </div>
+         <img src="./next.png" alt="">
+         <div class="step">
+           <dl>
+             <dt>
+               <img src="./tiche.png" alt="">
+             </dt>
+             <dd>
+               <b>坐等提车</b>
+               <p>秒车网会为您办理保险及上牌手续，收到提车通知后即可到指定门店提车。</p>
+             </dd>
+           </dl>
+         </div>
+       </div>
     </div>
   </div>
 </template>
@@ -496,13 +590,12 @@
       h1
         font-size 26px
         width 100%
-        color #666666
         text-align: center
         height 80px
         line-height 80px
         font-weight normal
         border-bottom 1px solid #EEEEEE
-
+        color #666666
       .can-wrapper
         width 100%
         box-sizing border-box
@@ -579,16 +672,14 @@
       .one
         width 100%
         height 350px
+        display: flex;
+        justify-content: center;
         img
           width 50%
           height 100%
         div
           width 50%
-          height 350px
-          float right
-          display table-cell
-          vertical-align:middle;
-          text-align: center
+          height 100%
           b
             font-size 22px
             color #666666
@@ -596,12 +687,91 @@
             display inline-block
             width 100%
             text-align: center
+            height 30px
+            line-height 30px
           p
             font-size 18px
-            color #666666
+            color #6C6C6C
             padding-left 20px
             padding-right 20px
-            text-align left
+            height 25px
+            line-height 25px
 
+
+    .compare
+      position relative
+      height 550px
+      background #fff
+      margin-top 30px
+      box-sizing border-box
+      .miao
+        width 50%
+        float left
+        text-align: center
+        height 100%
+        h4
+          width 380px
+          height 50px
+          color #fff
+          background #FF6600
+          font-size 16px
+          line-height 50px
+          text-align: center
+          margin 0 auto
+          margin-top 50px
+        .advantage
+          width 380px
+          margin 0 auto
+          margin-top 40px
+          b
+            color #FF6600
+            font-size 18px
+            padding-bottom 20px
+            display inline-block
+          p
+            font-size 16px
+            height 25px
+            line-height 25px
+            color #7D7477
+      .other
+        width 50%
+        float right
+        text-align: center
+        background #DADADA
+        height 100%
+        h4
+          width 380px
+          height 50px
+          color #fff
+          background #666666
+          font-size 16px
+          line-height 50px
+          text-align: center
+          margin 0 auto
+          margin-top 50px
+        .disadvantage
+          width 380px
+          margin 0 auto
+          margin-top 40px
+          b
+            color #666666
+            font-size 18px
+            padding-bottom 20px
+            display inline-block
+          p
+            font-size 16px
+            height 25px
+            line-height 25px
+            color #7D7477
+      img
+        position absolute
+        top 50px
+        left 575px
+    .process
+      height 464px
+      background #fff
+      display flex
+      box-sizing border-box
+      padding 70px
 
 </style>

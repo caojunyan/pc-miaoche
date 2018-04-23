@@ -184,6 +184,13 @@
            }
         },
         listenTo(someData){
+          console.log(someData)
+          if(someData.data.length===0){
+            this.$message({
+              message:"没有找到您要的车"
+            })
+            this.getHomeList()
+          }
           this.usedShow=false
           this.searchResult=someData.data
           this.searchnextUrlBase="https://api.miaoche168.com/api/home/screen?page="
@@ -199,9 +206,9 @@
             }
           })
         },
-        handleCurrentChange(pageNum){
+        handleCurrentChange(page){
           console.log(this.searchnextUrlBase+pageNum)
-          this.axios.get('https://api.miaoche168.com/api/home/screen?page=2').then(res=>{
+          this.axios.get(this.searchnextUrlBase+pageNum).then(res=>{
             this.searchResult=""
             console.log(res)
             this.searchResult=res.data.data
