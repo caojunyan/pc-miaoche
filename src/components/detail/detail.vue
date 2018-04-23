@@ -231,34 +231,63 @@
       </h1>
     </div>
     <!--图片-->
-    <div class="img-content container">
+    <div class="img-content container" ref="info">
       <div class="one">
         <img src="./one-img.png" alt="">
-        <div>
-          <b>时尚驾驶座</b>
-          <p>
-            接近于自然光线的月光白氛围灯，能更好的还原内饰材质的真实质感，同时打造宁静柔和的座舱氛围。
-          </p>
+        <div class="info-wrapper">
+         <div>
+           <b>时尚驾驶座</b>
+           <p>
+             接近于自然光接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯线的月光白氛围灯，能更好的还原内饰材质的真实质感，同时打造宁静柔和的座舱氛围。
+           </p>
+         </div>
         </div>
       </div>
-      <div class="one two">
-        <div>
-          <b>时尚驾驶座</b>
-          <p>
-            接近于自然光线的月光白氛围灯，能更好的还原内饰材质的真实质感，同时打造宁静柔和的座舱氛围。
-          </p>
+      <div class="one">
+        <img src="./one-img.png" alt="" >
+        <div class="info-wrapper">
+          <div>
+            <b>2时尚驾驶座</b>
+            <p>
+              接近于自然光接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯线的月光白氛围灯，能更好的还原内饰材质的真实质感，同时打造宁静柔和的座舱氛围。
+            </p>
+          </div>
         </div>
-        <img src="./one-img.png" alt="">
       </div>
       <div class="one">
         <img src="./one-img.png" alt="">
-        <div>
-          <b>时尚驾驶座</b>
-          <p>
-            接近于自然光线的月光白氛围灯，能更好的还原内饰材质的真实质感，同时打造宁静柔和的座舱氛围。
-          </p>
+        <div class="info-wrapper">
+          <div>
+            <b>时尚驾驶座</b>
+            <p>
+           月光白氛围灯接近于自然光线的月光白氛围灯线的月光白氛围灯，能更好的还原内饰材质的真实质感，同时打造宁静柔和的座舱氛围。
+            </p>
+          </div>
         </div>
       </div>
+      <div class="one">
+        <img src="./one-img.png" alt="">
+        <div class="info-wrapper">
+          <div>
+            <b>时尚驾驶座</b>
+            <p>
+           月光白氛围灯接近于自然光线的月光白氛围灯线的月光白氛围灯，能更好的还原内饰材质的真实质感，同时打造宁静柔和的座舱氛围。
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="one">
+        <img src="./one-img.png" alt="">
+        <div class="info-wrapper">
+          <div>
+            <b>时尚驾驶座</b>
+            <p>
+           月光白氛围灯接近于自然光线的月光白氛围灯线的月光白氛围灯，能更好的还原内饰材质的真实质感，同时打造宁静柔和的座舱氛围。
+            </p>
+          </div>
+        </div>
+      </div>
+
     </div>
     <!--比较-->
     <div class="compare container">
@@ -316,7 +345,7 @@
              </dd>
            </dl>
          </div>
-         <img src="./next.png" alt="">
+         <img src="./next.png" alt="" class="step-img">
          <div class="step">
            <dl>
              <dt>
@@ -328,7 +357,7 @@
              </dd>
            </dl>
          </div>
-         <img src="./next.png" alt="">
+         <img src="./next.png" alt="" class="step-img">
          <div class="step">
            <dl>
              <dt>
@@ -340,7 +369,7 @@
              </dd>
            </dl>
          </div>
-         <img src="./next.png" alt="">
+         <img src="./next.png" alt="" class="step-img">
          <div class="step">
            <dl>
              <dt>
@@ -419,9 +448,23 @@
       mouseOut(i){
         this.data.min=this.list[i].imgUrl
         this.data.max=this.list[i].imgUrl
+      },
+//      详情图
+      init(){
+        var infos=this.$refs.info
+        var ones=infos.getElementsByClassName("one")
+        for(var i=0;i<ones.length;i++){
+          if((i+1)%2==0){
+            ones[i].style.display='block'
+            var Left=ones[i].getElementsByClassName("info-wrapper")
+            Left[0].classList.add('left1')
+          }
+        }
+
       }
     },
     mounted(){
+      this.init()
       //设置默认第一张图片
       if(this.list){
         for(let i in this.list){
@@ -583,7 +626,7 @@
     .intro-wrapper
       min-height 830px
       background #fff
-      margin-top 30px
+      margin-top 20px
       box-sizing border-box
       padding-left 140px
       padding-right 140px
@@ -657,7 +700,7 @@
     .img-wrapper
         height 80px
         background #fff
-        margin-top 30px
+        margin-top 20px
         h1
           text-align: center
           height 80px
@@ -669,40 +712,44 @@
       min-height 200px
       background #fff
       margin-top 15px
+      display table
       .one
         width 100%
         height 350px
         display: flex;
-        justify-content: center;
         img
           width 50%
           height 100%
-        div
+        .info-wrapper
           width 50%
+          padding 0 40px
+          box-sizing border-box
+          display flex
           height 100%
-          b
-            font-size 22px
-            color #666666
-            font-weight normal
-            display inline-block
-            width 100%
-            text-align: center
-            height 30px
-            line-height 30px
-          p
-            font-size 18px
-            color #6C6C6C
-            padding-left 20px
-            padding-right 20px
-            height 25px
-            line-height 25px
-
-
+          align-items center
+          div
+            b
+              font-size 22px
+              color #666666
+              font-weight normal
+              display inline-block
+              width 100%
+              text-align: center
+              height 30px
+              line-height 30px
+            p
+              font-size 18px
+              color #6C6C6C
+              padding-left 20px
+              padding-right 20px
+              line-height 30px
+        .left1
+          float left
     .compare
       position relative
       height 550px
       background #fff
-      margin-top 30px
+      margin-top 20px
       box-sizing border-box
       .miao
         width 50%
@@ -770,8 +817,42 @@
     .process
       height 464px
       background #fff
-      display flex
       box-sizing border-box
       padding 70px
-
+      margin-top 20px
+      h1
+        width 100%
+        text-align: center
+        height 40px
+        line-height 40px
+        color #666666
+        font-size 26px
+        font-weight normal
+      .pro
+        display flex
+        justify-content space-between
+        padding-top 70px
+        .step-img
+          width 56px
+          height 15px
+          position relative
+          top 31px
+        .step
+          width 180px
+          text-align: center
+          img
+            width 80px
+            height 80px
+          b
+            display inline-block
+            height 70px
+            line-height 70px
+            font-size 16px
+            font-weight normal
+            color #333333
+          p
+            font-size 14px
+            line-height 20px
+            color #333333
+            text-align left
 </style>

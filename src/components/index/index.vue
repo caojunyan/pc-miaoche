@@ -93,7 +93,7 @@
           searchtotalPage:'',
           searchnextUrl:'',
           total:0,
-          pageSize:0
+          pageSize:0,
         }
       },
       components:{
@@ -189,7 +189,6 @@
             this.$message({
               message:"没有找到您要的车"
             })
-            this.getHomeList()
           }
           this.usedShow=false
           this.searchResult=someData.data
@@ -207,10 +206,10 @@
           })
         },
         handleCurrentChange(page){
-          console.log(this.searchnextUrlBase+pageNum)
-          this.axios.get(this.searchnextUrlBase+pageNum).then(res=>{
+          var carName=localStorage.getItem('carName')
+          console.log(this.searchnextUrlBase+page+'&value='+carName)
+          this.axios.get(this.searchnextUrlBase+page+'&&value='+carName).then(res=>{
             this.searchResult=""
-            console.log(res)
             this.searchResult=res.data.data
             this.$nextTick(() => {
               var cars = this.$refs.result.children

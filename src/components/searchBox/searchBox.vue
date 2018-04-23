@@ -53,6 +53,7 @@
           },
           search(){
             var carName=this.carName
+            localStorage.setItem('carName', this.carName);
             this.axios.get("https://api.miaoche168.com/api/home/screen?value="+carName).then(res=>{
               this.searchCars=res.data
               this.$emit('child-say',this.searchCars)
