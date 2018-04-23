@@ -2,10 +2,10 @@
     <div class="search container">
       <div class="search-wrapper">
         <div class="search-left">
-          <input type="text" placeholder="输入手机号"><span>免费预约</span>
+          <input type="text" placeholder="输入手机号" v-model="subBox.phone"><span @click="appointment">免费预约</span>
         </div>
         <div class="search-right">
-          <img src="./search-icon.png" alt=""><input type="text" placeholder="搜索你想要的车"><span>搜索</span>
+          <img src="./search-icon.png" alt=""><input type="text" placeholder="搜索你想要的车" v-model="carName"><span @click="search">搜索</span>
         </div>
       </div>
     </div>
@@ -13,7 +13,54 @@
 
 <script>
     export default {
-        name: "search-box"
+        name: "search-box",
+        data(){
+          return{
+            carName:'',
+            subBox:{
+              name: String(Date.parse(new Date())), //姓名
+              gender: "", //性别
+              phone:"", //手机号
+              code: "", //验证码
+              isMine: "", //是否是车主
+              creditStatus: "", //信用状态 --- 字符型
+              key: ""
+            },
+            searchCars:""
+          }
+        },
+        methods:{
+          appointment(){
+            var that=this;
+            var phoneReg = /^1[3|4|5|7}8][0-9]\d{4,8}$/;
+            if (!phoneReg.test(this.subBox.phone) || this.subBox.phone.length != 11 || !this.subBox.phone) {
+              this.$message({
+                showClose: true,
+                message: '手机号码输入有误',
+                type: 'warming'
+              });
+            }else{
+              this.axios.post('https://loan.api.miaoche168.com/api/customers',this.subBox).then(res=>{
+                this.$message({
+                  showClose: true,
+                  message: '提交成功，稍后会有工作人员与您联系',
+                  type: 'success'
+                });
+              }).catch(err=>{
+                console.log(err)
+              })
+            }
+          },
+          search(){
+            var carName=this.carName
+            this.axios.get("https://api.miaoche168.com/api/home/screen?value="+carName).then(res=>{
+              this.searchCars=res.data
+              this.$emit('child-say',this.searchCars)
+            }).catch(err=>{
+
+            })
+          }
+        }
     }
 </script>
 

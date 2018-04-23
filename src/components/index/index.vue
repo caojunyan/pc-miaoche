@@ -7,8 +7,39 @@
   <div class="body">
     <div class="container">
       <!--搜索框-->
-      <searchBox></searchBox>
-      <div class="cars-wrapper">
+      <searchBox v-on:child-say="listenTo"></searchBox>
+
+      <div class="search-result">
+        <div class="result-content" ref="result">
+          <dl v-for="(item,index) in searchResult" :key="index" >
+            <dt>
+              <img v-lazy=baseImg+item.imgUrl alt="" class="car-img">
+              <img src="./hot.png" alt="" class="hot-img">
+            </dt>
+            <dd>
+              <p class="cars-info">{{item.brand}} {{item.type}}</p>
+              <p class="pay">
+                <span>{{item.type}}</span>
+                <i>月付{{item.monthly}}</i>
+                <b>首付{{(item.firPrice)/10000}}万</b>
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <div class="page-wrapper container" v-show="!usedShow">
+          <el-pagination
+            @current-change="handleCurrentChange"
+            :current-page="searchcurrentPage"
+            background
+            :page-size="pageSize"
+            layout="prev, pager, next"
+            :total="total"
+            style="text-align: center;margin-top: 40px;padding-bottom: 40px">
+          </el-pagination>
+        </div>
+      </div>
+
+      <div class="cars-wrapper"  v-show="usedShow">
         <!--title-->
         <div class="cars-title ">
           <h3>优选二手车</h3>
@@ -31,7 +62,7 @@
         </div>
       </div>
       <!--更多-->
-      <div class="more-content" >
+      <div class="more-content" v-show="usedShow">
         <span @click="addMore" v-if="numShow">查看更多</span>
         <span @click="addMore" v-if="!numShow">没有更多数据了</span>
       </div>
@@ -50,10 +81,19 @@
           cars:"",
           baseImg:"https://api.miaoche168.com/",
           nextUrlBase:"",
-          currentPage:2,
+          currentPage:1,
           totalPage:'',
           nextUrl:'',
-          numShow:true
+          numShow:true,
+          usedShow:true,
+
+          searchResult:"",
+          searchnextUrlBase:"",
+          searchcurrentPage:1,
+          searchtotalPage:'',
+          searchnextUrl:'',
+          total:0,
+          pageSize:0
         }
       },
       components:{
@@ -68,7 +108,6 @@
                 cars[i].classList.add("middle-padding");
               }
             }
-
             // 返回顶部
             var btn = document.getElementById('top');
             var timer = null;
@@ -91,7 +130,6 @@
               isTop = false;
 
             };
-
             btn.onclick = function() {
               //设置定时器
               timer = setInterval(function(){
@@ -144,6 +182,41 @@
            }else{
               this.numShow=false
            }
+        },
+        listenTo(someData){
+          this.usedShow=false
+          this.searchResult=someData.data
+          this.searchnextUrlBase="https://api.miaoche168.com/api/home/screen?page="
+          this.searchtotalPage=someData.meta.pagination.total_pages
+          this.total=someData.meta.pagination.total
+          this.pageSize=someData.meta.pagination.per_page
+          this.$nextTick(() => {
+            var cars = this.$refs.result.children
+            for (var i = 1; i < cars.length; i++) {
+              if ((i + 1) % 3 == 2) {
+                cars[i].classList.add("middle-padding");
+              }
+            }
+          })
+        },
+        handleCurrentChange(pageNum){
+          console.log(this.searchnextUrlBase+pageNum)
+          this.axios.get('https://api.miaoche168.com/api/home/screen?page=2').then(res=>{
+            this.searchResult=""
+            console.log(res)
+            this.searchResult=res.data.data
+            this.$nextTick(() => {
+              var cars = this.$refs.result.children
+              for (var i = 1; i < cars.length; i++) {
+                if ((i + 1) % 3 == 2) {
+                  cars[i].classList.add("middle-padding");
+                }
+              }
+            })
+          }).catch(err=>{
+            console.log(err)
+            /* alert("网络错误")*/
+          })
         }
       },
       mounted(){
@@ -170,6 +243,40 @@
     padding-top: 58px;
   }
 
+  /*搜索结果*/
+  .search-result{
+
+  }
+  .result-content{
+    width: 100%;
+    min-height: 20px;
+    overflow: hidden;
+  }
+  .result-content dl{
+    width: 357px;
+    height: 264px;
+    background: #fff;
+    padding: 16px;
+    text-decoration: none;
+    margin-top: 30px;
+    float: left;
+    cursor: pointer;
+  }
+  .result-content dt{
+    width: 100%;
+    height: 180px;
+    border-bottom: 1px solid #DADADA;
+    text-align: center;
+    position: relative;
+  }
+
+
+
+
+
+
+
+
   /*cars*/
   .cars-wrapper{
     width: 100%;
@@ -178,7 +285,6 @@
   .cars-title{
     box-sizing: border-box;
     width: 100%;
-
     background: #fff;
     border-right: 4px solid #ff6600;
     border-left: 4px solid #ff6600;
@@ -194,7 +300,7 @@
   /*车辆*/
   .cars-content{
     width: 100%;
-    min-height: 500px;
+    min-height: 20px;
     overflow: hidden;
   }
   .cars-content dl{

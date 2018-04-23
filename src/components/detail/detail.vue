@@ -70,6 +70,196 @@
         </div>
       </div>
     </div>
+    <!--车辆介绍-->
+    <div class="intro-wrapper container">
+        <h1>车辆介绍</h1>
+        <div class="can-wrapper">
+          <div class="can-left">
+            <!--基本参数-->
+            <div class="base">
+              <h3>基本参数</h3>
+              <ul>
+                <li>
+                  <b>车型</b>
+                  <span>三行车</span>
+                </li>
+                <li>
+                  <b>车辆颜色</b>
+                  <span>其他</span>
+                </li>
+                <li>
+                  <b>变速箱</b>
+                  <span>手自一体变速箱</span>
+                </li>
+                <li>
+                  <b>变速箱档位</b>
+                  <span>无极当</span>
+                </li>
+                <li>
+                  <b>车门数</b>
+                  <span>四门</span>
+                </li>
+                <li>
+                  <b>座位数</b>
+                  <span>5座</span>
+                </li>
+                <li>
+                  <b>长*款*高(mm*mm*mm)</b>
+                  <span>4900*1820*1450</span>
+                </li>
+                <li>
+                  <b>行李箱容积（L）</b>
+                  <span>425</span>
+                </li>
+                <li>
+                  <b>轮毂材料</b>
+                  <span>425</span>
+                </li>
+                <li>
+                  <b>轴距(mm)</b>
+                  <span>2820</span>
+                </li>
+                <li>
+                  <b>整备质量（kg）</b>
+                  <span>1690</span>
+                </li>
+              </ul>
+            </div>
+            <!--底盘参数-->
+            <div class="di">
+              <h3>底盘参数</h3>
+              <ul>
+                <li>
+                  <b>驱动方式</b>
+                  <span>发顺丰</span>
+                </li>
+                <li>
+                  <b>转向系统</b>
+                  <span>发顺丰</span>
+                </li>
+                <li>
+                  <b>前悬挂</b>
+                  <span>发顺丰</span>
+                </li>
+                <li>
+                  <b>后悬挂</b>
+                  <span>发顺丰</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="can-right">
+          <!--发动机参数-->
+          <div class="engine">
+            <h3>发动机参数</h3>
+            <ul>
+              <li>
+                <b>百公里油耗(L)</b>
+                <span></span>
+              </li>
+              <li>
+                <b>排量(L)</b>
+                <span>1.8</span>
+              </li>
+              <li>
+                <b>油箱容积(L)</b>
+                <span>400-1530</span>
+              </li>
+              <li>
+                <b>进气形式</b>
+                <span>涡轮增压</span>
+              </li>
+              <li>
+                <b>最大扭矩(N·m)</b>
+                <span>250</span>
+              </li>
+              <li>
+                <b>燃油</b>
+                <span>汽油</span>
+              </li>
+              <li>
+                <b>燃油标号</b>
+                <span>汽油</span>
+              </li>
+              <li>
+                <b>排放标准</b>
+                <span>国V</span>
+              </li>
+              <li>
+                <b>功率(kw)</b>
+                <span>118</span>
+              </li>
+              <li>
+                <b>最高车速(km/h)</b>
+                <span>110</span>
+              </li>
+              <li>
+                <b>官方0-100km/h加速(s)</b>
+                <span></span>
+              </li>
+            </ul>
+          </div>
+          <!--车轮制动-->
+          <div class="zhidong">
+            <h3>车轮制动</h3>
+            <ul>
+              <li>
+                <b>前制动</b>
+                <span>前置驱动</span>
+              </li>
+              <li>
+                <b>后制动</b>
+                <span>前置驱动</span>
+              </li>
+              <li>
+                <b>前轮胎规格（mm）</b>
+                <span>前置驱动</span>
+              </li>
+              <li>
+                <b>后轮胎规格（mm）</b>
+                <span>前置驱动</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        </div>
+    </div>
+    <!--图片介绍-->
+    <div class="img-wrapper container">
+      <h1 class="img-title">
+        图片介绍
+      </h1>
+    </div>
+    <!--图片-->
+    <div class="img-content container">
+      <div class="one">
+        <img src="./one-img.png" alt="">
+        <div>
+          <b>时尚驾驶座</b>
+          <p>
+            接近于自然光线的月光白氛围灯，能更好的还原内饰材质的真实质感，同时打造宁静柔和的座舱氛围。
+          </p>
+        </div>
+      </div>
+      <div class="one">
+        <img src="./one-img.png" alt="">
+        <div>
+          <b>时尚驾驶座</b>
+          <p>
+            接近于自然光线的月光白氛围灯，能更好的还原内饰材质的真实质感，同时打造宁静柔和的座舱氛围。
+          </p>
+        </div>
+      </div>
+      <div class="one">
+        <img src="./one-img.png" alt="">
+        <div>
+          <b>时尚驾驶座</b>
+          <p>
+            接近于自然光线的月光白氛围灯，能更好的还原内饰材质的真实质感，同时打造宁静柔和的座舱氛围。
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -84,8 +274,8 @@
             "https://img.alicdn.com/imgextra/i3/2857774462/TB21fgcwwNlpuFjy0FfXXX3CpXa_!!2857774462.jpg"
         },
         list:[
-          {imgUrl:require('./product-s1-l.jpg')},
-          {imgUrl:require('./product-s4-l.jpg')},
+          {imgUrl:require('./car1.jpg')},
+          {imgUrl:require('./car2.png')},
           {imgUrl:require('./product-s3-l.jpg')},
           {imgUrl:require('./product-s4-l.jpg')},
           {imgUrl:require('./product-s1-l.jpg')},
@@ -226,8 +416,192 @@
              /* img:hover
                 border:2px solid red;*/
       .big-right
-        background red
         width 50%
         height 100%
         float left
+        h1
+          font-size 26px
+          height 95px
+          line-height 95px
+        .price
+          width 536px
+          height 97px
+          background #F4F4F4
+          display flex
+          justify-content space-between
+          padding-left 30px
+          padding-right 30px
+          span
+            display inline-block
+            color #FF6600
+            font-size 30px
+            font-weight bold
+            line-height 97px
+          .save
+            height 50px
+            margin-top 30px
+            p
+              height 20px
+              line-height 20px
+              text-align left
+              color #333333
+              font-size 16px
+              letter-spacing 2px
+
+        .info
+          width 100%
+          margin-top 20px
+          height 40px
+          padding-top 3px
+          padding-bottom 3px
+          display flex
+          justify-content space-around
+          dl
+            width 22%
+            height 100%
+            border-right 1px solid #DADADA
+            color #666666
+            font-size 16px
+            text-align: center
+            dt
+              height 23px
+              line-height 23px
+            dd
+              height 23px
+              line-height 23px
+        .info dl:last-child
+          border-right none
+        .buy
+          width 100%
+          height 97px
+          background #F4F4F4
+          display flex
+          justify-content space-around
+          margin-top 20px
+          dl
+            width 33.3%
+            text-align: center
+            font-size 20px
+            color #666666
+            height 25px
+            line-height 25px
+            margin-top 23px
+    .intro-wrapper
+      min-height 830px
+      background #fff
+      margin-top 30px
+      box-sizing border-box
+      padding-left 140px
+      padding-right 140px
+      h1
+        font-size 26px
+        width 100%
+        color #666666
+        text-align: center
+        height 80px
+        line-height 80px
+        font-weight normal
+        border-bottom 1px solid #EEEEEE
+
+      .can-wrapper
+        width 100%
+        box-sizing border-box
+        height 100%
+        .can-left
+          float left
+          width 46%
+          .base
+            margin-top 20px
+          .di
+            margin-top 20px
+          h3
+            height 40px
+            line-height 40px
+            width 100%
+            border-bottom 1px solid #EEEEEE
+            font-size 18px
+            font-weight normal
+          ul
+            width 100%
+            li
+              width 100%
+              height 40px
+              line-height 40px
+              border-bottom 1px solid #eee
+              font-size 14px
+              b
+                font-weight normal
+                float left
+              span
+                float right
+        .can-right
+          float right
+          width 46%
+          .engine
+            margin-top 20px
+          .zhidong
+            margin-top 20px
+          h3
+            height 40px
+            line-height 40px
+            width 100%
+            border-bottom 1px solid #EEEEEE
+            font-size 18px
+            font-weight normal
+          ul
+            width 100%
+            li
+              width 100%
+              height 40px
+              line-height 40px
+              border-bottom 1px solid #eee
+              font-size 14px
+              b
+                font-weight normal
+                float left
+              span
+                float right
+    .img-wrapper
+        height 80px
+        background #fff
+        margin-top 30px
+        h1
+          text-align: center
+          height 80px
+          line-height 80px
+          font-size 26px
+          color #666666
+          font-weight normal
+    .img-content
+      min-height 200px
+      background #fff
+      margin-top 15px
+      .one
+        width 100%
+        height 350px
+        img
+          width 50%
+          height 100%
+        div
+          width 50%
+          height 350px
+          float right
+          display table-cell
+          vertical-align:middle;
+          text-align: center
+          b
+            font-size 22px
+            color #666666
+            font-weight normal
+            display inline-block
+            width 100%
+            text-align: center
+          p
+            font-size 18px
+            color #666666
+            padding-left 20px
+            padding-right 20px
+            text-align left
+
+
 </style>

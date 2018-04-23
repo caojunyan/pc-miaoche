@@ -5,6 +5,7 @@ import Used from '../components/used/used'
 import About from '../components/about/about'
 import Contact from '../components/contact/contact'
 import Detail from '../components/detail/detail'
+import SearchPage from '../components/searchResult/searchResult'
 Vue.use(Router)
 
 export default new Router({
@@ -50,6 +51,14 @@ export default new Router({
       component: Detail,
       meta:{
         title:"详情"
+      }
+    },
+    {
+      path: '/searchpage',
+      name: 'SearchPage',
+      component: SearchPage,
+      meta:{
+        title:"搜索"
       }
     }
   ]
