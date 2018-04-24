@@ -1,7 +1,7 @@
 <template>
   <div class="magnify">
     <div class="preview-box" @mousemove="move($event)"  @mouseout="out" ref="previewBox">
-      <img width="100%" :src="previewImg" alt="" class="pre">
+      <img width="100%" height="100%" :src="previewImg" alt="" class="pre">
       <img src="./hot.png" alt="" class="hot">
       <div class="hover-box" ref="hoverBox"></div>
     </div>
@@ -101,10 +101,10 @@
     position: relative
     width 100%
     .preview-box
-      width: 480px
-      height: 480px
+      width: 600px
+      height: 348px
       position: relative
-      margin  0 auto
+      background #BEBEC0
       .pre
         width 100%
         height 100%

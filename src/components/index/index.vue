@@ -186,29 +186,31 @@
         listenTo(someData){
           console.log(someData)
           if(someData.data.length===0){
+            this.usedShow=true
             this.$message({
               message:"没有找到您要的车"
             })
-          }
-          this.usedShow=false
-          this.searchResult=someData.data
-          this.searchnextUrlBase="https://api.miaoche168.com/api/home/screen?page="
-          this.searchtotalPage=someData.meta.pagination.total_pages
-          this.total=someData.meta.pagination.total
-          this.pageSize=someData.meta.pagination.per_page
-          this.$nextTick(() => {
-            var cars = this.$refs.result.children
-            for (var i = 1; i < cars.length; i++) {
-              if ((i + 1) % 3 == 2) {
-                cars[i].classList.add("middle-padding");
+          }else{
+            this.usedShow=false
+            this.searchResult=someData.data
+            this.searchnextUrlBase="https://api.miaoche168.com/api/home/screen?page="
+            this.searchtotalPage=someData.meta.pagination.total_pages
+            this.total=someData.meta.pagination.total
+            this.pageSize=someData.meta.pagination.per_page
+            this.$nextTick(() => {
+              var cars = this.$refs.result.children
+              for (var i = 1; i < cars.length; i++) {
+                if ((i + 1) % 3 == 2) {
+                  cars[i].classList.add("middle-padding");
+                }
               }
-            }
-          })
+            })
+          }
         },
         handleCurrentChange(page){
           var carName=localStorage.getItem('carName')
           console.log(this.searchnextUrlBase+page+'&value='+carName)
-          this.axios.get(this.searchnextUrlBase+page+'&&value='+carName).then(res=>{
+          this.axios.get(this.searchnextUrlBase+page+'&value='+carName).then(res=>{
             this.searchResult=""
             this.searchResult=res.data.data
             this.$nextTick(() => {
@@ -274,6 +276,7 @@
     border-bottom: 1px solid #DADADA;
     text-align: center;
     position: relative;
+    overflow: hidden;
   }
 
 

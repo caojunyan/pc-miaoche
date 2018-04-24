@@ -26,4 +26,11 @@ ul,li,p,h1,h2,h3,h4,h5,h6,dl,dt,dd {
   border:none;
   list-style:none;
 }
+.el-pagination.is-background .el-pager li:not(.disabled).active{
+  background: #FF6600;
+  color: #fff;
+}
+.el-pagination.is-background .el-pager li:not(.disabled):hover{
+  color: #606266;
+}
 </style>

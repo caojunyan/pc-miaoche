@@ -24,8 +24,8 @@
         <div class="price">
           <span>￥23.58万</span>
           <div class="save">
-            <p>为您节省15.39万</p>
-            <p>新车价：35.9万+3.07万（购置税）</p>
+            <p class="save-money">为您节省 <b>15.39</b> 万</p>
+            <p class="new-car">新车价：14.98万</p>
           </div>
         </div>
         <div class="info">
@@ -42,8 +42,8 @@
             <dd>所在地</dd>
           </dl>
           <dl>
-            <dt>国四</dt>
-            <dd>排放标准</dd>
+            <dt>置换次数</dt>
+            <dd>1次</dd>
           </dl>
         </div>
         <div class="buy">
@@ -62,11 +62,6 @@
         </div>
         <div class="tel-wrapper">
           <span>讯车况电话：17762426950</span>
-        </div>
-        <div class="after-wrapper">
-          <span>一年后</span>
-          <b>尾款购车72100元</b>
-          <i>尾款也可分期2499元X36个月</i>
         </div>
       </div>
     </div>
@@ -491,104 +486,123 @@
     background #F1F1F1
     padding-top 30px
     .big-wrapper
-      height 600px
+      height 468px
       background #fff
       .big-left
-        width 50%
+        width 620px
         height 100%
+        padding 10px
+        box-sizing border-box
         float left
         .zoom-wrapper
           text-align: center
           height 450px
         .zoom-list
           width:100%
-          height:67px
+          height:60px
           overflow:hidden
           position:relative
           margin-top 25px
           .backward
             position:absolute
-            top:0;
+            top:15px;
             left:0;
-            width: 17px;
-            height:65px;
+            border-radius 50%
+            width: 30px;
+            height:30px;
             display:inline-block;
-            line-height:65px
+            line-height:30px
             border:1px solid #ddd;
             z-index:20
+            text-align: center
             &:hover
               cursor: pointer;
           .forward
             position:absolute
-            top:0;
-            right:20px;
-            width: 17px;
-            height:65px;
-            line-height:65px
+            top:15px;
+            right:0px;
+            width: 30px;
+            height:30px;
+            line-height:30px
+            border-radius 50%
             border:1px solid #ddd;
             background-color:#fff;
             z-index:20
+            text-align: center
             &:hover
               cursor: pointer;
           .disabled
             background-color:#999;
+            color #fff
           .undisabled
             background-color:#fff;
           ul
             float:left
             display:inline-block
-            height:65px;
+            height:60px;
             overflow:hidden
             position:absolute
-            left:17px
             li
               float:left
-              margin-right 10px
+              margin-left 20px
+              width 103px
+              height 100%
               &:first-child
                 margin-left:0px
               img
-                height:67px;
-                width:80px;
-                padding 1
-             /* img:hover
-                border:2px solid red;*/
+                height:60px;
+                width:103px;
       .big-right
-        width 50%
+        width 580px
         height 100%
         float left
+        padding 10px
+        box-sizing border-box
         h1
-          font-size 26px
-          height 95px
-          line-height 95px
+          font-size 24px
+          height 60px
+          line-height 60px
+          font-weight normal
+          padding-left 67px
         .price
-          width 536px
-          height 97px
+          width 100%
+          height 96px
           background #F4F4F4
           display flex
           justify-content space-between
-          padding-left 30px
-          padding-right 30px
+          padding-left 67px
+          box-sizing border-box
+          padding-right 67px
           span
             display inline-block
             color #FF6600
             font-size 30px
             font-weight bold
-            line-height 97px
+            line-height 96px
           .save
             height 50px
             margin-top 30px
             p
               height 20px
               line-height 20px
-              text-align left
               color #333333
               font-size 16px
               letter-spacing 2px
-
+              text-align: center
+            .save-money
+              font-size 18px
+              line-height 10px
+              b
+                font-size 22px
+                font-weight normal
+            .new-car
+              text-decoration line-through
+              text-line-through-color #ff6600
         .info
           width 100%
           margin-top 20px
-          height 40px
+          box-sizing border-box
+          height 59px
           padding-top 3px
           padding-bottom 3px
           display flex
@@ -610,19 +624,36 @@
           border-right none
         .buy
           width 100%
-          height 97px
+          height 79px
           background #F4F4F4
           display flex
           justify-content space-around
-          margin-top 20px
+          margin-top 10px
           dl
             width 33.3%
             text-align: center
-            font-size 20px
+            font-size 18px
             color #666666
             height 25px
             line-height 25px
-            margin-top 23px
+            margin-top 14px
+            dt dd
+              font-size 20px
+              color #666
+              font-weight normal
+        .tel-wrapper
+          width 100%
+          height 86px
+          margin-top 20px
+          span
+            color #ff6600
+            font-size 18px
+            text-align: center
+            width 100%
+            display inline-block
+            height 100%
+            border 1px solid #ff6600
+            line-height 88px
     .intro-wrapper
       min-height 830px
       background #fff

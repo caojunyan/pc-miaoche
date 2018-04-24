@@ -1,47 +1,11 @@
 <template>
     <div class="used">
       <div class="search">
-        <searchBox></searchBox>
+        <searchBox v-on:child-say="listenTo"></searchBox>
       </div>
-      <div class="sorting-box container">
-        <ul>
-          <li class="comprehensive">综合排序</li>
-          <li class="sentiment">
-            <span >人气</span>
-            <b class="top"></b>
-            <b class="bottom"></b>
-          </li>
-          <li class="sales">
-            <span>销量</span>
-            <b class="top"></b>
-            <b class="bottom"></b>
-          </li>
-          <li class="credit">
-            <span>信用</span>
-            <b class="top"></b>
-            <b class="bottom"></b>
-          </li>
-          <li class="price">
-            <span>价格</span>
-            <b class="top"></b>
-            <b class="bottom"></b>
-          </li>
-          <li class="search-price">
-            ￥<input type="text"  placeholder="0">
-            &nbsp;&nbsp;到
-            ￥<input type="text"  placeholder="0">
-          </li>
-          <li class="sorting-page">
-            <b class="toLeft"></b>
-            2/80页
-            <b class="toRight"></b>
-          </li>
-        </ul>
-      </div>
-      <!--车-->
-      <div class="container">
-        <div class="cars-content" ref="content">
-          <dl v-for="(item,index) in cars" :key="index" >
+      <div class="search-result container" v-if="!usedShow">
+        <div class="result-content" ref="result">
+          <dl v-for="(item,index) in searchResult" :key="index" >
             <dt>
               <img v-lazy=baseImg+item.imgUrl alt="" class="car-img">
               <img src="./hot.png" alt="" class="hot-img">
@@ -56,24 +20,90 @@
             </dd>
           </dl>
         </div>
+        <div class="page-wrapper container">
+          <el-pagination
+            @current-change="searchhandleCurrentChange"
+            :current-page="searchcurrentPage"
+            background
+            :page-size="searchpageSize"
+            layout="prev, pager, next"
+            :total="searchtotal"
+            style="text-align: center;margin-top: 40px;padding-bottom: 40px">
+          </el-pagination>
+        </div>
       </div>
-      <div class="page-wrapper container">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          background
-          :page-size="pageSize"
-          layout="prev, pager, next"
-          :total="total"
-        style="text-align: center;margin-top: 40px;padding-bottom: 40px">
-        </el-pagination>
+      <!--车-->
+      <div class="wrapper-container " v-if="usedShow">
+        <div class="sorting-box container">
+          <ul>
+            <li class="comprehensive">综合排序</li>
+            <li class="sentiment">
+              <span >人气</span>
+              <b class="top"></b>
+              <b class="bottom"></b>
+            </li>
+            <li class="sales">
+              <span>销量</span>
+              <b class="top"></b>
+              <b class="bottom"></b>
+            </li>
+            <li class="credit">
+              <span>信用</span>
+              <b class="top"></b>
+              <b class="bottom"></b>
+            </li>
+            <li class="price">
+              <span>价格</span>
+              <b class="top"></b>
+              <b class="bottom"></b>
+            </li>
+            <li class="search-price">
+              ￥<input type="text"  placeholder="0">
+              &nbsp;&nbsp;到
+              ￥<input type="text"  placeholder="0">
+            </li>
+            <li class="sorting-page">
+              <b class="toLeft"></b>
+              2/80页
+              <b class="toRight"></b>
+            </li>
+          </ul>
+        </div>
+        <div class="container">
+          <div class="cars-content" ref="content">
+            <dl v-for="(item,index) in cars" :key="index" >
+              <dt>
+                <img v-lazy=baseImg+item.imgUrl alt="" class="car-img">
+                <img src="./hot.png" alt="" class="hot-img">
+              </dt>
+              <dd>
+                <p class="cars-info">{{item.brand}} {{item.type}}</p>
+                <p class="pay">
+                  <span>{{item.type}}</span>
+                  <i>月付{{item.monthly}}</i>
+                  <b>首付{{(item.firPrice)/10000}}万</b>
+                </p>
+              </dd>
+            </dl>
+          </div>
+        </div>
+        <div class="page-wrapper container">
+          <el-pagination
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            background
+            :page-size="pageSize"
+            layout="prev, pager, next"
+            :total=" total"
+            style="text-align: center;margin-top: 40px;padding-bottom: 40px">
+          </el-pagination>
+        </div>
       </div>
     </div>
 </template>
 
 <script>
-  import searchBox from "../searchBox/searchBox"
+import searchBox from "../searchBox/searchBox"
 export default {
   name: "used",
   data(){
@@ -85,7 +115,16 @@ export default {
       totalPage:'',
       nextUrl:'',
       total:0,
-      pageSize:0
+      pageSize:0,
+      usedShow:true,
+
+      searchResult:"",
+      searchnextUrlBase:"",
+      searchcurrentPage:1,
+      searchtotalPage:'',
+      searchnextUrl:'',
+      searchtotal:0,
+      searchpageSize:0,
     }
   },
   components:{
@@ -129,6 +168,51 @@ export default {
        console.log(err)
       /* alert("网络错误")*/
      })
+    },
+
+
+    listenTo(someData){
+      if(someData.data.length===0){
+        this.usedShow=true
+        this.$message({
+          message:"没有找到您要的车"
+        })
+      }else{
+        this.usedShow=false
+        this.searchResult=someData.data
+        this.searchnextUrlBase="https://api.miaoche168.com/api/home/screen?page="
+        this.searchtotalPage=someData.meta.pagination.total_pages
+        this.searchtotal=someData.meta.pagination.total
+        this.searchpageSize=someData.meta.pagination.per_page
+        this.$nextTick(() => {
+          var cars = this.$refs.result.children
+          for (var i = 1; i < cars.length; i++) {
+            if ((i + 1) % 3 == 2) {
+              cars[i].classList.add("middle-padding");
+            }
+          }
+        })
+      }
+    },
+    searchhandleCurrentChange(page){
+     console.log(4)
+      var carName=localStorage.getItem('carName')
+      console.log(this.searchnextUrlBase+page+'&value='+carName)
+      this.axios.get(this.searchnextUrlBase+page+'&value='+carName).then(res=>{
+        this.searchResult=""
+        this.searchResult=res.data.data
+        this.$nextTick(() => {
+          var cars = this.$refs.result.children
+          for (var i = 1; i < cars.length; i++) {
+            if ((i + 1) % 3 == 2) {
+              cars[i].classList.add("middle-padding");
+            }
+          }
+        })
+      }).catch(err=>{
+        console.log(err)
+        /* alert("网络错误")*/
+      })
     }
   },
   mounted(){
@@ -338,5 +422,33 @@ export default {
   }
   .el-pagination.is-background .el-pager li:not(.disabled).active{
     background-color: #FF6600;
+  }
+
+  /*搜索结果*/
+  .search-result{
+
+  }
+  .result-content{
+    width: 100%;
+    min-height: 20px;
+    overflow: hidden;
+  }
+  .result-content dl{
+    width: 357px;
+    height: 264px;
+    background: #fff;
+    padding: 16px;
+    text-decoration: none;
+    margin-top: 30px;
+    float: left;
+    cursor: pointer;
+  }
+  .result-content dt{
+    width: 100%;
+    height: 180px;
+    border-bottom: 1px solid #DADADA;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
   }
 </style>
