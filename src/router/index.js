@@ -8,6 +8,7 @@ import Detail from '../components/detail/detail'
 import SearchPage from '../components/searchResult/searchResult'
 Vue.use(Router)
 export default new Router({
+  mode: 'history',
   routes: [
     { path: '/',
       redirect: '/index'
@@ -60,5 +61,8 @@ export default new Router({
         title:"搜索"
       }
     }
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  }
 })
