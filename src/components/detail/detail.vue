@@ -4,7 +4,8 @@
     <div class="big-wrapper container">
       <div class="big-left">
         <div class="zoom-wrapper">
-          <img-zoom :src=baseImg+list[0] width="600" height="348" :bigsrc=baseImg+list[0] :configs="configs"></img-zoom>
+          <!--<img :src="baseImg+baseImgUrl" width="600" height="348" alt="">-->
+          <img-zoom :src=baseImg+baseImgUrl width="600" height="348" :bigsrc=baseImg+maxImg :configs="configs"></img-zoom>
         </div>
         <div class="zoom-list">
           <i class="backward el-icon-arrow-left" :class="state==1?'disabled':'undisabled'" @click="rightMove"></i>
@@ -225,12 +226,6 @@
   export default {
     data() {
       return {
-        data: {
-          min:
-            "https://img.alicdn.com/imgextra/i3/2857774462/TB21fgcwwNlpuFjy0FfXXX3CpXa_!!2857774462.jpg_430x430q90.jpg",
-          max:
-            "https://img.alicdn.com/imgextra/i3/2857774462/TB21fgcwwNlpuFjy0FfXXX3CpXa_!!2857774462.jpg"
-        },
         list:[
         ],
         configs: {
@@ -241,12 +236,14 @@
           maskColor:'red',
           maskOpacity:0.2
         },
-        state:0,
-        LIWIDTH:103,//每个li的宽
-        OFFSET:20,//起始left,用作修正left值
+        state:1,
+        LIWIDTH:125,//每个li的宽
+        OFFSET:0,//起始left,用作修正left值
         moved:0,
         baseImg:"https://api.miaoche168.com/",
         MoveLeft:'',//向左移动
+        maxImg:'',//放大后的图片链接
+        baseImgUrl:'',//第一张默认图片链接
         graphic: [
           {
             imgURL: '',
@@ -276,35 +273,32 @@
       };
     },
     methods:{
-      rightMove(){
-        if(this.state==0){
+      leftMove(){
+        if(this.state==1){
           this.moved++
           this.MoveLeft=-this.LIWIDTH*this.moved+this.OFFSET
           let listLength=this.list.length
           if(listLength-this.moved==5){
-            this.state=1
+            this.state=0
           }
         }
       },
-      leftMove(){
-        if(this.state == 1){
+      rightMove(){
+        if(this.state == 0){
           this.moved--
           this.MoveLeft=-this.LIWIDTH*this.moved+this.OFFSET
           for(let i in this.list){
             if(this.moved==0){
-              this.state=0
+              this.state=1
             }
           }
         }
       },
       mouseMover(i){
-        console.log(i)
-        this.data.min=this.list[i]
-        this.data.max=this.list[i]
+        this.maxImg=this.list[i]
+        this.baseImgUrl=this.list[i]
       },
       mouseOut(i){
-        this.data.min=this.list[i]
-        this.data.max=this.list[i]
       },
 //      详情图
       init(){
@@ -351,6 +345,7 @@
           this.axios.get('https://api.miaoche168.com/api/cars/'+id+'/images?state=wx_rowImg').then(res=>{
             for(var i=0;i<res.data.data.length;i++){
               this.list.push(res.data.data[i].url)
+              this.baseImgUrl=this.list[0]
             }
           })
       }
@@ -358,16 +353,17 @@
     mounted(){
       this.getDetail()
       this.init()
+      for(var key in this.list){
+        console.log(this.list[key])
+      }
       //设置默认第一张图片
       if(this.list){
         for(let i in this.list){
           if(i<=4) this.state=-1//如果图片少于6张，不允许左右切换
           else{
-            this.state=0
+            this.state=1
           }
         }
-        this.data.max=this.list[0]
-        this.data.min=this.list[0]
       }else{
         console.log('没图片')
       }

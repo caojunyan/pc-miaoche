@@ -36,7 +36,7 @@
       <div class="wrapper-container " v-if="usedShow">
         <div class="sorting-box container">
           <ul>
-            <li class="comprehensive">综合排序</li>
+            <li class="comprehensive">默认排序</li>
             <li class="carType" >
               <select name="" id="sel1" >
                 <option value="" disabled selected>车型</option>
@@ -44,26 +44,28 @@
                 <option value="二手车" >二手车</option>
               </select>
             </li>
-            <li class="brandType" height="80">
-              <select name="" id="sel2" >
-                <option value="" disabled selected>品牌</option>
-                <option value="新车" >日产</option>
-                <option value="二手车" >福特</option>
-                <option value="二手车" >宝马</option>
-                <option value="二手车" >本田</option>
-                <option value="" disabled selected>品牌</option>
-                <option value="新车" >日产</option>
-                <option value="二手车" >福特</option>
-                <option value="二手车" >宝马</option>
-                <option value="二手车" >本田</option>
+            <li class="brandType" >
+              <select name="" id="sel2" @click="selectFocus()">
+                <option value="" disabled selected @click="selectClick()">品牌</option>
+                <option value="新车" @click="selectClick()">日产</option>
+                <option value="二手车" @click="selectClick()">福特</option>
+                <option value="二手车" @click="selectClick()">福特</option>
+                <option value="二手车" @click="selectClick()">福特</option>
+                <option value="二手车" @click="selectClick()">福特</option>
+                <option value="二手车" @click="selectClick()">福特</option>
+                <option value="二手车" @click="selectClick()">福特</option>
+                <option value="二手车" @click="selectClick()">福特</option>
+
               </select>
             </li>
             <li class="priceType" >
-              <select name="" id="sel3" >
-                <option value="" disabled selected>价格</option>
+              <select name="" id="sel3">
+                <option value="" disabled selected >价格</option>
                 <option value="新车" >10万以下</option>
                 <option value="二手车" >10-20万</option>
                 <option value="二手车" >20-30万</option>
+                <option value="二手车" >30-40万</option>
+                <option value="二手车" >30-40万</option>
                 <option value="二手车" >30-40万</option>
               </select>
             </li>
@@ -221,8 +223,18 @@ export default {
         console.log(err)
         /* alert("网络错误")*/
       })
-    }
-  },
+    },
+
+
+    selectFocus(){
+        document.getElementById("sel2").setAttribute("size","5");
+      },
+   selectClick(){
+      document.getElementById("sel2").removeAttribute("size");
+      document.getElementById("sel2").blur();
+      this.setAttribute("selected","");
+  }
+},
   mounted(){
     // 获取二手车列表
     this.getHomeList()
@@ -248,7 +260,7 @@ export default {
   }
   .sorting-box ul li{
     float: left;
-    min-width: 40px;
+    width: 140px;
     padding-left: 5px;
     padding-right: 5px;
     height: 40px;
@@ -258,11 +270,19 @@ export default {
     position: relative;
     cursor: pointer;
   }
+  .sorting-box ul li.comprehensive{
+    width: 60px;
+  }
   .sorting-box ul li select{
     width: 130px;
     height: 30px;
     outline: none;
+    position: absolute;
+    z-index: 1;
+    margin-left: 40px;
     padding-left: 10px;
+    top:5px;
+
   }
   .sorting-box ul li select option{
     outline: none;
