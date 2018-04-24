@@ -37,35 +37,35 @@
         <div class="sorting-box container">
           <ul>
             <li class="comprehensive">综合排序</li>
-            <li class="sentiment">
-              <span >人气</span>
-              <b class="top"></b>
-              <b class="bottom"></b>
+            <li class="carType" >
+              <select name="" id="sel1" >
+                <option value="" disabled selected>车型</option>
+                <option value="新车" >新车</option>
+                <option value="二手车" >二手车</option>
+              </select>
             </li>
-            <li class="sales">
-              <span>销量</span>
-              <b class="top"></b>
-              <b class="bottom"></b>
+            <li class="brandType" height="80">
+              <select name="" id="sel2" >
+                <option value="" disabled selected>品牌</option>
+                <option value="新车" >日产</option>
+                <option value="二手车" >福特</option>
+                <option value="二手车" >宝马</option>
+                <option value="二手车" >本田</option>
+                <option value="" disabled selected>品牌</option>
+                <option value="新车" >日产</option>
+                <option value="二手车" >福特</option>
+                <option value="二手车" >宝马</option>
+                <option value="二手车" >本田</option>
+              </select>
             </li>
-            <li class="credit">
-              <span>信用</span>
-              <b class="top"></b>
-              <b class="bottom"></b>
-            </li>
-            <li class="price">
-              <span>价格</span>
-              <b class="top"></b>
-              <b class="bottom"></b>
-            </li>
-            <li class="search-price">
-              ￥<input type="text"  placeholder="0">
-              &nbsp;&nbsp;到
-              ￥<input type="text"  placeholder="0">
-            </li>
-            <li class="sorting-page">
-              <b class="toLeft"></b>
-              2/80页
-              <b class="toRight"></b>
+            <li class="priceType" >
+              <select name="" id="sel3" >
+                <option value="" disabled selected>价格</option>
+                <option value="新车" >10万以下</option>
+                <option value="二手车" >10-20万</option>
+                <option value="二手车" >20-30万</option>
+                <option value="二手车" >30-40万</option>
+              </select>
             </li>
           </ul>
         </div>
@@ -258,44 +258,21 @@ export default {
     position: relative;
     cursor: pointer;
   }
-  /*人气*/
-  .sentiment{
-    position: relative;
+  .sorting-box ul li select{
+    width: 130px;
+    height: 30px;
+    outline: none;
+    padding-left: 10px;
   }
-  .top{
-    position: absolute;
-    width: 0px;
-    height: 0px;
-    *width: 14px;
-    *height: 14px;
-    font-size: 0;
-    line-height: 0;
-    overflow: hidden;
-    border-width: 5px;
-    border-style: dashed dashed dashed solid;
-    border-color:transparent transparent #fff transparent ;
-    top:8px;
-    right: 0px;
+  .sorting-box ul li select option{
+    outline: none;
+    width: 100%;
+    height: 30px;
   }
-  .bottom{
-    position: absolute;
-    width: 0px;
-    height: 0px;
-    *width: 14px;
-    *height: 14px;
-    font-size: 0;
-    line-height: 0;
-    overflow: hidden;
-    border-width: 5px;
-    border-style: dashed dashed dashed solid;
-    border-color: #fff transparent transparent transparent ;
-    bottom: 8px;
-    right: 0px;
-  }
-.search-price{
-  height: 25px;
 
-}
+
+
+
   .search-price>input{
     width: 70px;
     height: 25px;
@@ -308,38 +285,7 @@ export default {
     padding-right: 40px;
     position: relative;
   }
-  .toLeft{
-    position: absolute;
-    width: 0px;
-    height: 0px;
-    *width: 14px;
-    *height: 14px;
-    font-size: 0;
-    line-height: 0;
-    overflow: hidden;
-    border-width: 5px;
-    border-style: dashed dashed dashed solid;
-    border-color: transparent  #fff transparent transparent ;
-    bottom:37%;
-    left: -8px;
-    display: inline-block;
-  }
-  .toRight{
-    position: absolute;
-    display: inline-block;
-    width: 0px;
-    height: 0px;
-    *width: 14px;
-    *height: 14px;
-    font-size: 0;
-    line-height: 0;
-    overflow: hidden;
-    border-width: 5px;
-    border-style: dashed dashed dashed solid;
-    border-color: transparent transparent transparent #fff ;
-    bottom:37%;
-    right:25px;
-  }
+
 
 
   .cars-content{
