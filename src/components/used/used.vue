@@ -5,7 +5,7 @@
       </div>
       <div class="search-result container" v-if="!usedShow">
         <div class="result-content" ref="result">
-          <dl v-for="(item,index) in searchResult" :key="index" >
+          <dl v-for="(item,index) in searchResult" :key="index" @click="toDetail(item.id)">
             <dt>
               <img v-lazy=baseImg+item.imgUrl alt="" class="car-img">
               <img src="./hot.png" alt="" class="hot-img">
@@ -71,7 +71,7 @@
         </div>
         <div class="container">
           <div class="cars-content" ref="content">
-            <dl v-for="(item,index) in cars" :key="index" >
+            <dl v-for="(item,index) in cars" :key="index" @click="toDetail(item.id)">
               <dt>
                 <img v-lazy=baseImg+item.imgUrl alt="" class="car-img">
                 <img src="./hot.png" alt="" class="hot-img">
@@ -169,7 +169,15 @@ export default {
       /* alert("网络错误")*/
      })
     },
+    toDetail(id){
 
+      this.$router.push({
+        name: "Detail",
+        query: {
+          id: id
+        }
+      })
+    },
 
     listenTo(someData){
       if(someData.data.length===0){

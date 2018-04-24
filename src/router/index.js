@@ -7,7 +7,6 @@ import Contact from '../components/contact/contact'
 import Detail from '../components/detail/detail'
 import SearchPage from '../components/searchResult/searchResult'
 Vue.use(Router)
-
 export default new Router({
   routes: [
     { path: '/',

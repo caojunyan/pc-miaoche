@@ -4,56 +4,44 @@
     <div class="big-wrapper container">
       <div class="big-left">
         <div class="zoom-wrapper">
-          <MyMagnify :previewImg="data.min" :zoomImg="data.max"></MyMagnify>
-          <div class="zoom-list">
-            <i class="backward el-icon-arrow-left" :class="state==0?'disabled':'undisabled'" @click="rightMove"></i>
-            <i class="forward el-icon-arrow-right" :class="state==1?'disabled':'undisabled'" @click="leftMove"></i>
-           <!-- <a class="backward" :class="state==0?'disabled':'undisabled'" @click="rightMove"><</a>-->
-           <!-- <a class="forward" :class="state==1?'disabled':'undisabled'" @click="leftMove">></a>-->
-            <ul :style="'left:'+MoveLeft+'px'">
-              <li v-for="(item,i) in list" :key="i" @mouseover="mouseMover(i)" @mouseout="mouseOut(i)">
-                <img :src="item.imgUrl" alt="">
-              </li>
-            </ul>
-          </div>
+          <img-zoom :src=baseImg+list[0] width="600" height="348" :bigsrc=baseImg+list[0] :configs="configs"></img-zoom>
+        </div>
+        <div class="zoom-list">
+          <i class="backward el-icon-arrow-left" :class="state==1?'disabled':'undisabled'" @click="rightMove"></i>
+          <i class="forward el-icon-arrow-right" :class="state==0?'disabled':'undisabled'" @click="leftMove"></i>
+          <!-- <a class="backward" :class="state==0?'disabled':'undisabled'" @click="rightMove"><</a>-->
+          <!-- <a class="forward" :class="state==1?'disabled':'undisabled'" @click="leftMove">></a>-->
+          <ul :style="'left:'+MoveLeft+'px'">
+            <li v-for="(item,i) in list" :key="i" @mouseover="mouseMover(i)" @mouseout="mouseOut(i)">
+              <img :src=baseImg+item alt="">
+            </li>
+          </ul>
         </div>
 
       </div>
       <div class="big-right">
-        <h1>思域2016款 220TURBO CVT尊贵版</h1>
+        <h1>{{leftConfig.type}}</h1>
         <div class="price">
-          <span>￥23.58万</span>
+          <span>￥{{(leftConfig.total)/10000}}万</span>
           <div class="save">
-            <p class="save-money">为您节省 <b>15.39</b> 万</p>
-            <p class="new-car">新车价：14.98万</p>
+            <p class="save-money">为您节省 <b>{{(((leftConfig.newCarPrice)/10000)-((leftConfig.total)/10000)).toFixed(2)}}</b> 万</p>
+            <p class="new-car">新车价：{{(leftConfig.newCarPrice)/10000}}万</p>
           </div>
         </div>
         <div class="info">
-          <dl>
-            <dt>2013-06</dt>
-            <dd>首次上牌</dd>
-          </dl>
-          <dl>
-            <dt>7.00万公里</dt>
-            <dd>行驶里程</dd>
-          </dl>
-          <dl>
-            <dt>武汉</dt>
-            <dd>所在地</dd>
-          </dl>
-          <dl>
-            <dt>置换次数</dt>
-            <dd>1次</dd>
+          <dl v-for="(item,index) in leftInfo" v-if="index==0||index==1||index==10">
+            <dt>{{item.value}}</dt>
+            <dd>{{item.name}}</dd>
           </dl>
         </div>
         <div class="buy">
           <dl>
             <dt>首付</dt>
-            <dd>0.89万</dd>
+            <dd>{{((leftConfig.firPrice)/10000)}}万</dd>
           </dl>
           <dl>
             <dt>月供</dt>
-            <dd>2398元</dd>
+            <dd>{{leftConfig.monthly}}元</dd>
           </dl>
           <dl>
             <dt>期数</dt>
@@ -67,157 +55,54 @@
     </div>
     <!--车辆介绍-->
     <div class="intro-wrapper container">
-        <h1>车辆介绍</h1>
-        <div class="can-wrapper">
-          <div class="can-left">
-            <!--基本参数-->
-            <div class="base">
-              <h3>基本参数</h3>
-              <ul>
-                <li>
-                  <b>车型</b>
-                  <span>三行车</span>
-                </li>
-                <li>
-                  <b>车辆颜色</b>
-                  <span>其他</span>
-                </li>
-                <li>
-                  <b>变速箱</b>
-                  <span>手自一体变速箱</span>
-                </li>
-                <li>
-                  <b>变速箱档位</b>
-                  <span>无极当</span>
-                </li>
-                <li>
-                  <b>车门数</b>
-                  <span>四门</span>
-                </li>
-                <li>
-                  <b>座位数</b>
-                  <span>5座</span>
-                </li>
-                <li>
-                  <b>长*款*高(mm*mm*mm)</b>
-                  <span>4900*1820*1450</span>
-                </li>
-                <li>
-                  <b>行李箱容积（L）</b>
-                  <span>425</span>
-                </li>
-                <li>
-                  <b>轮毂材料</b>
-                  <span>425</span>
-                </li>
-                <li>
-                  <b>轴距(mm)</b>
-                  <span>2820</span>
-                </li>
-                <li>
-                  <b>整备质量（kg）</b>
-                  <span>1690</span>
-                </li>
-              </ul>
-            </div>
-            <!--底盘参数-->
-            <div class="di">
-              <h3>底盘参数</h3>
-              <ul>
-                <li>
-                  <b>驱动方式</b>
-                  <span>发顺丰</span>
-                </li>
-                <li>
-                  <b>转向系统</b>
-                  <span>发顺丰</span>
-                </li>
-                <li>
-                  <b>前悬挂</b>
-                  <span>发顺丰</span>
-                </li>
-                <li>
-                  <b>后悬挂</b>
-                  <span>发顺丰</span>
-                </li>
-              </ul>
-            </div>
+      <h1>车辆介绍</h1>
+      <div class="can-wrapper">
+        <div class="can-left">
+          <!--基本参数-->
+          <div class="base">
+            <h3>基本参数</h3>
+            <ul>
+              <li  v-for="item in config.baseCan">
+                <b>{{item.name}}</b>
+                <span>{{item.value}}</span>
+              </li>
+            </ul>
           </div>
-          <div class="can-right">
+          <!--底盘参数-->
+          <div class="di">
+            <h3>底盘参数</h3>
+            <ul>
+              <li  v-for="item in config.planCan">
+                <b>{{item.name}}</b>
+                <span>{{item.value}}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="can-right">
           <!--发动机参数-->
           <div class="engine">
             <h3>发动机参数</h3>
             <ul>
-              <li>
-                <b>百公里油耗(L)</b>
-                <span></span>
+              <li  v-for="item in config.engineCan">
+                <b>{{item.name}}</b>
+                <span>{{item.value}}</span>
               </li>
-              <li>
-                <b>排量(L)</b>
-                <span>1.8</span>
-              </li>
-              <li>
-                <b>油箱容积(L)</b>
-                <span>400-1530</span>
-              </li>
-              <li>
-                <b>进气形式</b>
-                <span>涡轮增压</span>
-              </li>
-              <li>
-                <b>最大扭矩(N·m)</b>
-                <span>250</span>
-              </li>
-              <li>
-                <b>燃油</b>
-                <span>汽油</span>
-              </li>
-              <li>
-                <b>燃油标号</b>
-                <span>汽油</span>
-              </li>
-              <li>
-                <b>排放标准</b>
-                <span>国V</span>
-              </li>
-              <li>
-                <b>功率(kw)</b>
-                <span>118</span>
-              </li>
-              <li>
-                <b>最高车速(km/h)</b>
-                <span>110</span>
-              </li>
-              <li>
-                <b>官方0-100km/h加速(s)</b>
-                <span></span>
-              </li>
+
             </ul>
           </div>
           <!--车轮制动-->
           <div class="zhidong">
             <h3>车轮制动</h3>
             <ul>
-              <li>
-                <b>前制动</b>
-                <span>前置驱动</span>
-              </li>
-              <li>
-                <b>后制动</b>
-                <span>前置驱动</span>
-              </li>
-              <li>
-                <b>前轮胎规格（mm）</b>
-                <span>前置驱动</span>
-              </li>
-              <li>
-                <b>后轮胎规格（mm）</b>
-                <span>前置驱动</span>
+              <li v-for="item in config.zhiCan">
+                <b>{{item.name}}</b>
+                <span>{{item.value}}</span>
               </li>
             </ul>
           </div>
         </div>
-        </div>
+      </div>
     </div>
     <!--图片介绍-->
     <div class="img-wrapper container">
@@ -227,62 +112,17 @@
     </div>
     <!--图片-->
     <div class="img-content container" ref="info">
-      <div class="one">
-        <img src="./one-img.png" alt="">
-        <div class="info-wrapper">
-         <div>
-           <b>时尚驾驶座</b>
-           <p>
-             接近于自然光接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯线的月光白氛围灯，能更好的还原内饰材质的真实质感，同时打造宁静柔和的座舱氛围。
-           </p>
-         </div>
-        </div>
-      </div>
-      <div class="one">
-        <img src="./one-img.png" alt="" >
+      <div class="one" v-for="item in graphic">
+        <img :src=baseImg+item.imgURL  alt="">
         <div class="info-wrapper">
           <div>
-            <b>2时尚驾驶座</b>
+            <b>{{item.title}}</b>
             <p>
-              接近于自然光接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯接近于自然光线的月光白氛围灯线的月光白氛围灯，能更好的还原内饰材质的真实质感，同时打造宁静柔和的座舱氛围。
+              {{item.text}}
             </p>
           </div>
         </div>
       </div>
-      <div class="one">
-        <img src="./one-img.png" alt="">
-        <div class="info-wrapper">
-          <div>
-            <b>时尚驾驶座</b>
-            <p>
-           月光白氛围灯接近于自然光线的月光白氛围灯线的月光白氛围灯，能更好的还原内饰材质的真实质感，同时打造宁静柔和的座舱氛围。
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="one">
-        <img src="./one-img.png" alt="">
-        <div class="info-wrapper">
-          <div>
-            <b>时尚驾驶座</b>
-            <p>
-           月光白氛围灯接近于自然光线的月光白氛围灯线的月光白氛围灯，能更好的还原内饰材质的真实质感，同时打造宁静柔和的座舱氛围。
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="one">
-        <img src="./one-img.png" alt="">
-        <div class="info-wrapper">
-          <div>
-            <b>时尚驾驶座</b>
-            <p>
-           月光白氛围灯接近于自然光线的月光白氛围灯线的月光白氛围灯，能更好的还原内饰材质的真实质感，同时打造宁静柔和的座舱氛围。
-            </p>
-          </div>
-        </div>
-      </div>
-
     </div>
     <!--比较-->
     <div class="compare container">
@@ -327,61 +167,61 @@
     </div>
     <!--购车流程-->
     <div class="process container">
-        <h1>购车流程</h1>
-       <div class="pro">
-         <div class="step">
-           <dl>
-             <dt>
-               <img src="./yuyue.png" alt="">
-             </dt>
-             <dd>
-               <b>在线预约</b>
-               <p>留下您的联系方式和看车时间，预约成功后销售会与您联系。</p>
-             </dd>
-           </dl>
-         </div>
-         <img src="./next.png" alt="" class="step-img">
-         <div class="step">
-           <dl>
-             <dt>
-               <img src="./xinyong.png" alt="">
-             </dt>
-             <dd>
-               <b>信用评估</b>
-               <p>秒车网工作人员会即时与您取得联系，并对根据您的信用来评估购车方案。</p>
-             </dd>
-           </dl>
-         </div>
-         <img src="./next.png" alt="" class="step-img">
-         <div class="step">
-           <dl>
-             <dt>
-               <img src="./xieyi.png" alt="">
-             </dt>
-             <dd>
-               <b>签订协议</b>
-               <p>秒车网工作人员会与您签订购车协议，并核实相关个人信息。</p>
-             </dd>
-           </dl>
-         </div>
-         <img src="./next.png" alt="" class="step-img">
-         <div class="step">
-           <dl>
-             <dt>
-               <img src="./tiche.png" alt="">
-             </dt>
-             <dd>
-               <b>坐等提车</b>
-               <p>秒车网会为您办理保险及上牌手续，收到提车通知后即可到指定门店提车。</p>
-             </dd>
-           </dl>
-         </div>
-       </div>
+      <h1>购车流程</h1>
+      <div class="pro">
+        <div class="step">
+          <dl>
+            <dt>
+              <img src="./yuyue.png" alt="">
+            </dt>
+            <dd>
+              <b>在线预约</b>
+              <p>留下您的联系方式和看车时间，预约成功后销售会与您联系。</p>
+            </dd>
+          </dl>
+        </div>
+        <img src="./next.png" alt="" class="step-img">
+        <div class="step">
+          <dl>
+            <dt>
+              <img src="./xinyong.png" alt="">
+            </dt>
+            <dd>
+              <b>信用评估</b>
+              <p>秒车网工作人员会即时与您取得联系，并对根据您的信用来评估购车方案。</p>
+            </dd>
+          </dl>
+        </div>
+        <img src="./next.png" alt="" class="step-img">
+        <div class="step">
+          <dl>
+            <dt>
+              <img src="./xieyi.png" alt="">
+            </dt>
+            <dd>
+              <b>签订协议</b>
+              <p>秒车网工作人员会与您签订购车协议，并核实相关个人信息。</p>
+            </dd>
+          </dl>
+        </div>
+        <img src="./next.png" alt="" class="step-img">
+        <div class="step">
+          <dl>
+            <dt>
+              <img src="./tiche.png" alt="">
+            </dt>
+            <dd>
+              <b>坐等提车</b>
+              <p>秒车网会为您办理保险及上牌手续，收到提车通知后即可到指定门店提车。</p>
+            </dd>
+          </dl>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script>
-  import MyMagnify from "../big/big";
+  import imgZoom from 'vue2.0-zoom'
   export default {
     data() {
       return {
@@ -392,43 +232,65 @@
             "https://img.alicdn.com/imgextra/i3/2857774462/TB21fgcwwNlpuFjy0FfXXX3CpXa_!!2857774462.jpg"
         },
         list:[
-          {imgUrl:require('./car1.jpg')},
-          {imgUrl:require('./car2.png')},
-          {imgUrl:require('./product-s3-l.jpg')},
-          {imgUrl:require('./product-s4-l.jpg')},
-          {imgUrl:require('./product-s1-l.jpg')},
-          {imgUrl:require('./product-s4-l.jpg')},
-          {imgUrl:require('./product-s3-l.jpg')},
-          {imgUrl:require('./product-s3-l.jpg')},
-          {imgUrl:require('./product-s4-l.jpg')},
-          {imgUrl:require('./product-s1-l.jpg')},
-          {imgUrl:require('./mPic.png')},
-
         ],
+        configs: {
+          width:600,
+          height:348,
+          maskWidth:100,
+          maskHeight:100,
+          maskColor:'red',
+          maskOpacity:0.2
+        },
         state:0,
-        LIWIDTH:90,//每个li的宽
+        LIWIDTH:103,//每个li的宽
         OFFSET:20,//起始left,用作修正left值
         moved:0,
-        MoveLeft:''//向左移动
+        baseImg:"https://api.miaoche168.com/",
+        MoveLeft:'',//向左移动
+        graphic: [
+          {
+            imgURL: '',
+            title: '',
+            text: ''
+          },
+          {
+            imgURL: '',
+            title: '',
+            text: ''
+          },
+          {
+            imgURL: '',
+            title: '',
+            text: ''
+          }
+        ],
+        config:{
+          baseCan:"",
+          engineCan:"",
+          planCan:"",
+          zhiCan:""
+        },
+        leftConfig:"",
+        leftInfo:"",
+        bigImg:""
       };
     },
     methods:{
-      leftMove(){
+      rightMove(){
         if(this.state==0){
           this.moved++
           this.MoveLeft=-this.LIWIDTH*this.moved+this.OFFSET
-            let listLength=this.list.length
-            if(listLength-this.moved==6){
-              this.state=1
+          let listLength=this.list.length
+          if(listLength-this.moved==5){
+            this.state=1
           }
         }
       },
-      rightMove(){
+      leftMove(){
         if(this.state == 1){
           this.moved--
           this.MoveLeft=-this.LIWIDTH*this.moved+this.OFFSET
           for(let i in this.list){
-            console.log(i)
             if(this.moved==0){
               this.state=0
             }
@@ -436,13 +298,13 @@
         }
       },
       mouseMover(i){
-        console.log(this.list[i].imgUrl)
-        this.data.min=this.list[i].imgUrl
-        this.data.max=this.list[i].imgUrl
+        console.log(i)
+        this.data.min=this.list[i]
+        this.data.max=this.list[i]
       },
       mouseOut(i){
-        this.data.min=this.list[i].imgUrl
-        this.data.max=this.list[i].imgUrl
+        this.data.min=this.list[i]
+        this.data.max=this.list[i]
       },
 //      详情图
       init(){
@@ -456,26 +318,62 @@
           }
         }
 
+      },
+      // 获取信息
+      getDetail(){
+        var id=this.$route.query.id
+        // 获取文案信息
+        this.axios.get('https://api.miaoche168.com/api/cars/'+id+'/graphics').then(res=>{
+          this.graphic[0].title=res.data.data[0].top_title
+          this.graphic[0].text= res.data.data[0].top_content
+          this.graphic[1].title=res.data.data[0].mid_title
+          this.graphic[1].text= res.data.data[0].mid_content
+          this.graphic[2].title=res.data.data[0].sub_title
+          this.graphic[2].text= res.data.data[0].sub_content
+        })
+        // 获取文案图片
+        this.axios.get('https://api.miaoche168.com/api/cars/'+id+'/banners').then(res=>{
+          this.graphic[0].imgURL=res.data.data[0].url
+          this.graphic[1].imgURL=res.data.data[1].url
+          this.graphic[2].imgURL=res.data.data[2].url
+        })
+        // 获取车辆配置
+        this.axios.get('https://api.miaoche168.com/api/car/'+id+'/a/config').then(res=>{
+          this.config=res.data
+          this.config.baseCan=this.config.configuration[0].children
+          this.config.engineCan=this.config.configuration[1].children
+          this.config.planCan=this.config.configuration[2].children
+          this.config.zhiCan=this.config.configuration[3].children
+          this.leftConfig=res.data.car
+          this.leftInfo=res.data.basicCon
+        })
+        // 获取车辆展示图片
+          this.axios.get('https://api.miaoche168.com/api/cars/'+id+'/images?state=wx_rowImg').then(res=>{
+            for(var i=0;i<res.data.data.length;i++){
+              this.list.push(res.data.data[i].url)
+            }
+          })
       }
     },
     mounted(){
+      this.getDetail()
       this.init()
       //设置默认第一张图片
       if(this.list){
         for(let i in this.list){
-          if(i<=5) this.state=-1//如果图片少于6张，不允许左右切换
+          if(i<=4) this.state=-1//如果图片少于6张，不允许左右切换
           else{
             this.state=0
           }
         }
-        this.data.max=this.list[0].imgUrl
-        this.data.min=this.list[0].imgUrl
+        this.data.max=this.list[0]
+        this.data.min=this.list[0]
       }else{
         console.log('没图片')
       }
     },
     components: {
-      MyMagnify
+      imgZoom
     }
   }
 </script>
@@ -496,7 +394,7 @@
         float left
         .zoom-wrapper
           text-align: center
-          height 450px
+          height 348px
         .zoom-list
           width:100%
           height:60px
@@ -644,16 +542,16 @@
         .tel-wrapper
           width 100%
           height 86px
-          margin-top 20px
+          margin-top 30px
           span
             color #ff6600
             font-size 18px
             text-align: center
             width 100%
             display inline-block
-            height 100%
+            height 70px
             border 1px solid #ff6600
-            line-height 88px
+            line-height 70px
     .intro-wrapper
       min-height 830px
       background #fff
@@ -729,16 +627,16 @@
               span
                 float right
     .img-wrapper
+      height 80px
+      background #fff
+      margin-top 20px
+      h1
+        text-align: center
         height 80px
-        background #fff
-        margin-top 20px
-        h1
-          text-align: center
-          height 80px
-          line-height 80px
-          font-size 26px
-          color #666666
-          font-weight normal
+        line-height 80px
+        font-size 26px
+        color #666666
+        font-weight normal
     .img-content
       min-height 200px
       background #fff
@@ -759,6 +657,8 @@
           height 100%
           align-items center
           div
+            width 100%
+            text-align: center
             b
               font-size 22px
               color #666666

@@ -11,7 +11,7 @@
 
       <div class="search-result">
         <div class="result-content" ref="result">
-          <dl v-for="(item,index) in searchResult" :key="index" >
+          <dl v-for="(item,index) in searchResult" :key="index" @click="toDetail(item.id)">
             <dt>
               <img v-lazy=baseImg+item.imgUrl alt="" class="car-img">
               <img src="./hot.png" alt="" class="hot-img">
@@ -45,7 +45,7 @@
           <h3>优选二手车</h3>
         </div>
         <div class="cars-content" ref="content">
-            <dl v-for="(item,index) in cars" :key="index" >
+            <dl v-for="(item,index) in cars" :key="index" @click="toDetail(item.id)">
               <dt>
                 <img v-lazy=baseImg+item.imgUrl alt="" class="car-img">
                 <img src="./hot.png" alt="" class="hot-img">
@@ -184,7 +184,6 @@
            }
         },
         listenTo(someData){
-          console.log(someData)
           if(someData.data.length===0){
             this.usedShow=true
             this.$message({
@@ -209,7 +208,6 @@
         },
         handleCurrentChange(page){
           var carName=localStorage.getItem('carName')
-          console.log(this.searchnextUrlBase+page+'&value='+carName)
           this.axios.get(this.searchnextUrlBase+page+'&value='+carName).then(res=>{
             this.searchResult=""
             this.searchResult=res.data.data
@@ -222,8 +220,17 @@
               }
             })
           }).catch(err=>{
-            console.log(err)
             /* alert("网络错误")*/
+          })
+        },
+        // 到详情页
+        toDetail(id){
+
+          this.$router.push({
+            name: "Detail",
+            query: {
+              id: id
+            }
           })
         }
       },
