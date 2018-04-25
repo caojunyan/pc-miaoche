@@ -11,7 +11,7 @@ Vue.use( Pagination)
 Vue.use( Icon)
 Vue.prototype.$message = Message;
 Vue.use(VueLazyLoad,{
-  error:'./static/error.png',
+  error:'./static/loading.png',
   loading:'./static/loading.png'
 })
 

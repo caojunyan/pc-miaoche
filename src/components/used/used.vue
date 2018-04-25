@@ -1,11 +1,70 @@
 <template>
-    <div class="used">
-      <div class="search">
-        <searchBox v-on:child-say="listenTo"></searchBox>
+  <div class="used">
+    <div class="search">
+      <searchBox v-on:child-say="listenTo"></searchBox>
+    </div>
+    <div class="search-result container" v-if="!usedShow">
+      <div class="result-content" ref="result">
+        <dl v-for="(item,index) in searchResult" :key="index" @click="toDetail(item.id)">
+          <dt>
+            <img v-lazy=baseImg+item.imgUrl alt="" class="car-img">
+            <img src="./hot.png" alt="" class="hot-img">
+          </dt>
+          <dd>
+            <p class="cars-info">{{item.brand}} {{item.type}}</p>
+            <p class="pay">
+              <span>{{item.type}}</span>
+              <i>月付{{item.monthly}}</i>
+              <b>首付{{(item.firPrice)/10000}}万</b>
+            </p>
+          </dd>
+        </dl>
       </div>
-      <div class="search-result container" v-if="!usedShow">
-        <div class="result-content" ref="result">
-          <dl v-for="(item,index) in searchResult" :key="index" @click="toDetail(item.id)">
+      <div class="page-wrapper container">
+        <el-pagination
+          @current-change="searchhandleCurrentChange"
+          :current-page="searchcurrentPage"
+          background
+          :page-size="searchpageSize"
+          layout="prev, pager, next"
+          :total="searchtotal"
+          style="text-align: center;margin-top: 40px;padding-bottom: 40px">
+        </el-pagination>
+      </div>
+    </div>
+    <!--车-->
+    <div class="wrapper-container " v-if="usedShow">
+      <div class="sorting-box container">
+        <ul>
+          <li class="comprehensive" @click="defaultSort">默认排序</li>
+          <li class="carType" >
+            <select name="" id="sel1" @change="selNewCar">
+              <option value="" disabled selected>车型</option>
+              <option value="新车" >新车</option>
+              <option value="二手车" >二手车</option>
+            </select>
+          </li>
+          <li class="brandType" >
+            <select name="" id="sel2" @change="selBrands">
+              <option value="" disabled selected>品牌</option>
+              <option :value=item.value v-for="(item ,index) in brands" v-model="item.value" :key="index">{{item.value}}</option>
+            </select>
+          </li>
+          <li class="priceType" >
+            <select name="" id="sel3" @change="selPrice">
+              <option  disabled selected  value="">价格</option>
+              <option value="0-100000" >10万以下</option>
+              <option value="100000-200000" >10-20万</option>
+              <option value="200000-300000" >20-30万</option>
+              <option value="300000-500000" >30-50万</option>
+              <option value="500000-1000000" >50万以上</option>
+            </select>
+          </li>
+        </ul>
+      </div>
+      <div class="container">
+        <div class="cars-content" ref="content">
+          <dl v-for="(item,index) in cars" :key="index" @click="toDetail(item.id)">
             <dt>
               <img v-lazy=baseImg+item.imgUrl alt="" class="car-img">
               <img src="./hot.png" alt="" class="hot-img">
@@ -20,227 +79,225 @@
             </dd>
           </dl>
         </div>
-        <div class="page-wrapper container">
-          <el-pagination
-            @current-change="searchhandleCurrentChange"
-            :current-page="searchcurrentPage"
-            background
-            :page-size="searchpageSize"
-            layout="prev, pager, next"
-            :total="searchtotal"
-            style="text-align: center;margin-top: 40px;padding-bottom: 40px">
-          </el-pagination>
-        </div>
       </div>
-      <!--车-->
-      <div class="wrapper-container " v-if="usedShow">
-        <div class="sorting-box container">
-          <ul>
-            <li class="comprehensive">默认排序</li>
-            <li class="carType" >
-              <select name="" id="sel1" >
-                <option value="" disabled selected>车型</option>
-                <option value="新车" >新车</option>
-                <option value="二手车" >二手车</option>
-              </select>
-            </li>
-            <li class="brandType" >
-              <select name="" id="sel2" @click="selectFocus()">
-                <option value="" disabled selected @click="selectClick()">品牌</option>
-                <option value="新车" @click="selectClick()">日产</option>
-                <option value="二手车" @click="selectClick()">福特</option>
-                <option value="二手车" @click="selectClick()">福特</option>
-                <option value="二手车" @click="selectClick()">福特</option>
-                <option value="二手车" @click="selectClick()">福特</option>
-                <option value="二手车" @click="selectClick()">福特</option>
-                <option value="二手车" @click="selectClick()">福特</option>
-                <option value="二手车" @click="selectClick()">福特</option>
-
-              </select>
-            </li>
-            <li class="priceType" >
-              <select name="" id="sel3">
-                <option value="" disabled selected >价格</option>
-                <option value="新车" >10万以下</option>
-                <option value="二手车" >10-20万</option>
-                <option value="二手车" >20-30万</option>
-                <option value="二手车" >30-40万</option>
-                <option value="二手车" >30-40万</option>
-                <option value="二手车" >30-40万</option>
-              </select>
-            </li>
-          </ul>
-        </div>
-        <div class="container">
-          <div class="cars-content" ref="content">
-            <dl v-for="(item,index) in cars" :key="index" @click="toDetail(item.id)">
-              <dt>
-                <img v-lazy=baseImg+item.imgUrl alt="" class="car-img">
-                <img src="./hot.png" alt="" class="hot-img">
-              </dt>
-              <dd>
-                <p class="cars-info">{{item.brand}} {{item.type}}</p>
-                <p class="pay">
-                  <span>{{item.type}}</span>
-                  <i>月付{{item.monthly}}</i>
-                  <b>首付{{(item.firPrice)/10000}}万</b>
-                </p>
-              </dd>
-            </dl>
-          </div>
-        </div>
-        <div class="page-wrapper container">
-          <el-pagination
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            background
-            :page-size="pageSize"
-            layout="prev, pager, next"
-            :total=" total"
-            style="text-align: center;margin-top: 40px;padding-bottom: 40px">
-          </el-pagination>
-        </div>
+      <div class="page-wrapper container">
+        <el-pagination
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          background
+          :page-size="pageSize"
+          layout="prev, pager, next"
+          :total=" total"
+          style="text-align: center;margin-top: 40px;padding-bottom: 40px">
+        </el-pagination>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
-import searchBox from "../searchBox/searchBox"
-export default {
-  name: "used",
-  data(){
-    return{
-      cars:"",
-      baseImg:"https://api.miaoche168.com/",
-      nextUrlBase:"",
-      currentPage:1,
-      totalPage:'',
-      nextUrl:'',
-      total:0,
-      pageSize:0,
-      usedShow:true,
+  import searchBox from "../searchBox/searchBox"
+  export default {
+    name: "used",
+    data(){
+      return{
+        cars:"",
+        baseImg:"https://api.miaoche168.com/",
+        nextUrlBase:"",
+        currentPage:1,
+        totalPage:'',
+        nextUrl:'',
+        total:0,
+        pageSize:0,
+        usedShow:true,
 
-      searchResult:"",
-      searchnextUrlBase:"",
-      searchcurrentPage:1,
-      searchtotalPage:'',
-      searchnextUrl:'',
-      searchtotal:0,
-      searchpageSize:0,
-    }
-  },
-  components:{
-    searchBox
-  },
-  methods:{
-   init(){
-     this.$nextTick(() => {
-       var cars=this.$refs.content.children
-       for(var i=1;i<cars.length;i++){
-         if((i+1)%3==2){
-           cars[i].classList.add("middle-padding");
-         }
-       }
+        searchResult:"",
+        searchnextUrlBase:"",
+        searchcurrentPage:1,
+        searchtotalPage:'',
+        searchnextUrl:'',
+        searchtotal:0,
+        searchpageSize:0,
 
-     });
-   },
-   getHomeList(){
-      this.axios.get('https://api.miaoche168.com/api/cars/list/used').then(res=>{
-        this.nextUrlBase="https://api.miaoche168.com/api/cars/list/used?page="
-        this.totalPage=res.data.meta.pagination.total_pages
-        this.cars=res.data.data
-        this.total=res.data.meta.pagination.total
-        this.pageSize=res.data.meta.pagination.per_page
-        this.init()
-      }).catch(err=>{
-        alert("网络错误")
-      })
-    },
-    // pageSize 改变时会触发	每页条数size
-   handleSizeChange (e){
-    console.log(e)
-    },
-    // currentPage 改变时会触发	当前页currentPage
-   handleCurrentChange(pageNum){
-     this.cars=""
-     this.axios.get(this.nextUrlBase+pageNum).then(res=>{
-         this.cars=res.data.data
-          this.init()
-     }).catch(err=>{
-       console.log(err)
-      /* alert("网络错误")*/
-     })
-    },
-    toDetail(id){
 
-      this.$router.push({
-        name: "Detail",
-        query: {
-          id: id
-        }
-      })
-    },
-
-    listenTo(someData){
-      if(someData.data.length===0){
-        this.usedShow=true
-        this.$message({
-          message:"没有找到您要的车"
-        })
-      }else{
-        this.usedShow=false
-        this.searchResult=someData.data
-        this.searchnextUrlBase="https://api.miaoche168.com/api/home/screen?page="
-        this.searchtotalPage=someData.meta.pagination.total_pages
-        this.searchtotal=someData.meta.pagination.total
-        this.searchpageSize=someData.meta.pagination.per_page
-        this.$nextTick(() => {
-          var cars = this.$refs.result.children
-          for (var i = 1; i < cars.length; i++) {
-            if ((i + 1) % 3 == 2) {
-              cars[i].classList.add("middle-padding");
-            }
-          }
-        })
+        brands:"",
       }
     },
-    searchhandleCurrentChange(page){
-     console.log(4)
-      var carName=localStorage.getItem('carName')
-      console.log(this.searchnextUrlBase+page+'&value='+carName)
-      this.axios.get(this.searchnextUrlBase+page+'&value='+carName).then(res=>{
-        this.searchResult=""
-        this.searchResult=res.data.data
+    components:{
+      searchBox
+    },
+    methods:{
+      init(){
         this.$nextTick(() => {
-          var cars = this.$refs.result.children
-          for (var i = 1; i < cars.length; i++) {
-            if ((i + 1) % 3 == 2) {
+          var cars=this.$refs.content.children
+          for(var i=1;i<cars.length;i++){
+            if((i+1)%3==2){
               cars[i].classList.add("middle-padding");
             }
           }
-        })
-      }).catch(err=>{
-        console.log(err)
-        /* alert("网络错误")*/
-      })
-    },
 
-
-    selectFocus(){
-        document.getElementById("sel2").setAttribute("size","5");
+        });
       },
-   selectClick(){
-      document.getElementById("sel2").removeAttribute("size");
-      document.getElementById("sel2").blur();
-      this.setAttribute("selected","");
-  }
-},
-  mounted(){
-    // 获取二手车列表
-    this.getHomeList()
-  }
+      getHomeList(){
+        this.axios.get('https://api.miaoche168.com/api/cars/list/used').then(res=>{
+          this.nextUrlBase="https://api.miaoche168.com/api/cars/list/used?page="
+          this.totalPage=res.data.meta.pagination.total_pages
+          this.cars=res.data.data
+          this.total=res.data.meta.pagination.total
+          this.pageSize=res.data.meta.pagination.per_page
+          this.init()
+        }).catch(err=>{
+          alert("网络错误")
+        })
+      },
+      // pageSize 改变时会触发	每页条数size
+      handleSizeChange (e){
+        console.log(e)
+      },
+      // currentPage 改变时会触发	当前页currentPage
+      handleCurrentChange(pageNum){
+        this.cars=""
+        this.axios.get(this.nextUrlBase+pageNum).then(res=>{
+          console.log(res)
+          this.cars=res.data.data
+          this.init()
+        }).catch(err=>{
+          console.log(err)
+        })
+      },
+      toDetail(id){
 
-}
+        this.$router.push({
+          name: "Detail",
+          query: {
+            id: id
+          }
+        })
+      },
+      listenTo(someData){
+        if(someData.data.length===0){
+          this.usedShow=true
+          this.$message({
+            message:"没有找到您要的车"
+          })
+        }else{
+          this.usedShow=false
+          this.searchResult=someData.data
+          this.searchnextUrlBase="https://api.miaoche168.com/api/home/screen?page="
+          this.searchtotalPage=someData.meta.pagination.total_pages
+          this.searchtotal=someData.meta.pagination.total
+          this.searchpageSize=someData.meta.pagination.per_page
+          this.$nextTick(() => {
+            var cars = this.$refs.result.children
+            for (var i = 1; i < cars.length; i++) {
+              if ((i + 1) % 3 == 2) {
+                cars[i].classList.add("middle-padding");
+              }
+            }
+          })
+        }
+      },
+      searchhandleCurrentChange(page){
+        console.log(4)
+        var carName=localStorage.getItem('carName')
+        console.log(this.searchnextUrlBase+page+'&value='+carName)
+        this.axios.get(this.searchnextUrlBase+page+'&value='+carName).then(res=>{
+          this.searchResult=""
+          this.searchResult=res.data.data
+          this.$nextTick(() => {
+            var cars = this.$refs.result.children
+            for (var i = 1; i < cars.length; i++) {
+              if ((i + 1) % 3 == 2) {
+                cars[i].classList.add("middle-padding");
+              }
+            }
+          })
+        }).catch(err=>{
+          console.log(err)
+          /* alert("网络错误")*/
+        })
+      },
+      // 获取品牌
+      getBrands(){
+        this.axios.get('https://api.miaoche168.com/api/brands').then(res=>{
+          this.brands=res.data
+        }).catch(err=>{
+          console.log(err)
+        })
+      },
+      // 改变品牌
+      selBrands(e){
+        var brandSel=e.target.value;
+        this.axios.get('https://api.miaoche168.com/api/home/brands?value=' + brandSel).then(res=>{
+          this.cars=res.data.data
+          this.nextUrlBase='https://api.miaoche168.com/api/home/brands?value=' + brandSel+'&page='
+          this.totalPage=res.data.meta.pagination.total_pages
+          this.total=res.data.meta.pagination.total
+          this.pageSize=res.data.meta.pagination.per_page
+          this.init()
+          console.log(res)
+        }).catch(err=>{
+          console.log(err)
+        })
+      },
+      // 新车和二手车的切换
+      selNewCar(e){
+        var carType=e.target.value
+        this.currentPage=1
+        if(carType==="新车"){
+          this.axios.get('https://api.miaoche168.com/api/cars/list/new').then(res=>{
+            this.nextUrlBase="https://api.miaoche168.com/api/cars/list/used?page="
+            this.totalPage=res.data.meta.pagination.total_pages
+            this.cars=res.data.data
+            this.total=res.data.meta.pagination.total
+            this.pageSize=res.data.meta.pagination.per_page
+            this.init()
+          }).catch(err=>{
+            alert("网络错误")
+          })
+        }else if(carType==="二手车"){
+          this.axios.get('https://api.miaoche168.com/api/cars/list/used').then(res=>{
+            this.nextUrlBase="https://api.miaoche168.com/api/cars/list/used?page="
+            this.totalPage=res.data.meta.pagination.total_pages
+            this.cars=res.data.data
+            this.total=res.data.meta.pagination.total
+            this.pageSize=res.data.meta.pagination.per_page
+            this.init()
+          }).catch(err=>{
+            alert("网络错误")
+          })
+        }
+      },
+      // 默认排序
+      defaultSort(){
+        this.getHomeList()
+      },
+      // 价格筛选
+      selPrice(e){
+        var min=e.target.value.split("-")[0]
+        var max=e.target.value.split("-")[1]
+        this.axios.get('https://api.miaoche168.com/api/cars/price/'+ min + '/' + max).then(res=>{
+          console.log(res)
+          this.nextUrlBase="https://api.miaoche168.com/api/cars/price/"+min+'/'+max+'?page='
+          this.totalPage=res.data.meta.pagination.total_pages
+          this.cars=res.data.data
+          this.total=res.data.meta.pagination.total
+          this.pageSize=res.data.meta.pagination.per_page
+          this.currentPage=1
+          this.init()
+        }).catch(err=>{
+          console.log(err)
+        })
+       console.log(this.currentPage,'当前的')
+      }
+    },
+    mounted(){
+      // 获取二手车列表
+      this.getHomeList()
+      this.getBrands()
+    }
+
+  }
 </script>
 
 <style scoped>
@@ -319,7 +376,7 @@ export default {
     background: #fff;
     padding: 16px;
     text-decoration: none;
-    margin-top: 30px;
+    margin-top: 17px;
     float: left;
     cursor: pointer;
   }
@@ -329,12 +386,14 @@ export default {
     border-bottom: 1px solid #DADADA;
     text-align: center;
     position: relative;
+    overflow: hidden;
   }
   .car-img{
     text-align: center;
     width: 240px;
     margin-left: 54px;
     margin-top: -20px;
+    overflow: hidden;
   }
   .hot-img{
     position: absolute;
@@ -413,7 +472,7 @@ export default {
     background: #fff;
     padding: 16px;
     text-decoration: none;
-    margin-top: 30px;
+    margin-top: 17px;
     float: left;
     cursor: pointer;
   }

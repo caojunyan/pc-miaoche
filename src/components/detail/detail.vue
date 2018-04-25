@@ -5,19 +5,17 @@
       <div class="big-left">
         <div class="zoom-wrapper" width="600" height="348">
          <!-- <img-zoom :src=baseImg+baseImgUrl width="600" height="348" :bigsrc=baseImg+maxImg :configs="configs"></img-zoom>-->
-          <pic-zoom :url=baseImg+baseImgUrl :scale="3"></pic-zoom>
+          <pic-zoom :url=baseImg+baseImgUrl :scale="2.5"></pic-zoom>
         </div>
         <div class="zoom-list">
           <i class="backward el-icon-arrow-left" :class="state==1?'disabled':'undisabled'" @click="rightMove"></i>
           <i class="forward el-icon-arrow-right" :class="state==0?'disabled':'undisabled'" @click="leftMove"></i>
-          <!-- <a class="backward" :class="state==0?'disabled':'undisabled'" @click="rightMove"><</a>-->
-          <!-- <a class="forward" :class="state==1?'disabled':'undisabled'" @click="leftMove">></a>-->
           <ul :style="'left:'+MoveLeft+'px'">
             <li v-for="(item,i) in list" :key="i" @mouseover="mouseMover(i)" @mouseout="mouseOut(i)">
               <img :src=baseImg+item alt="">
             </li>
           </ul>
-        </div>n
+        </div>
 
       </div>
       <div class="big-right">
@@ -222,7 +220,6 @@
   </div>
 </template>
 <script>
- /* import imgZoom from 'vue2.0-zoom'*/
  import PicZoom from 'vue-piczoom'
   export default {
     data() {
@@ -370,7 +367,6 @@
       }
     },
     components: {
-      /*imgZoom*/
       PicZoom
     }
   }
@@ -435,19 +431,23 @@
           ul
             float:left
             display:inline-block
-            height:60px;
             overflow:hidden
             position:absolute
+            box-sizing border-box
             li
               float:left
               margin-left 20px
+              box-sizing border-box
               width 103px
               height 100%
+              border 1px solid transparent
               &:first-child
                 margin-left:0px
+              &:hover
+                border 1px solid red
               img
-                height:60px;
-                width:103px;
+                height:56px;
+                width:101px;
       .big-right
         width 580px
         height 100%

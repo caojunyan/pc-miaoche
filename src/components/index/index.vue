@@ -273,7 +273,7 @@
     background: #fff;
     padding: 16px;
     text-decoration: none;
-    margin-top: 30px;
+    margin-top: 17px;
     float: left;
     cursor: pointer;
   }
@@ -325,7 +325,7 @@
     background: #fff;
     padding: 16px;
     text-decoration: none;
-    margin-top: 30px;
+    margin-top: 17px;
     float: left;
     cursor: pointer;
   }
