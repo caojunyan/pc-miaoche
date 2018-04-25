@@ -309,11 +309,33 @@
      //  console.log(this.currentPage,'当前的')
       },
       // f5刷新
+      refresh(){
+        console.log('url',window.location.href)
+       /* window.onbeforeunload = function (e) {
+          e = e || window.event;
+
+          // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
+          alert(1)
+          return '关闭提示';
+        };*/
+       console.log(this.$route)
+        window.onbeforeunload = function (e) {
+          if (e.keyCode == 116) {
+            var url=this.$route
+            this.$router.push({
+              path:this.$route.fullPath
+            })
+
+           /* window.location.reload(window.location.href);*/
+          }
+        }
+        }
     },
     mounted(){
       // 获取二手车列表
       this.getHomeList()
       this.getBrands()
+      this.refresh()
     }
 
   }

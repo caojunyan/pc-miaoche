@@ -5,7 +5,6 @@ import Used from '../components/used/used'
 import About from '../components/about/about'
 import Contact from '../components/contact/contact'
 import Detail from '../components/detail/detail'
-import SearchPage from '../components/searchResult/searchResult'
 Vue.use(Router)
 export default new Router({
   mode: 'history',
@@ -18,7 +17,7 @@ export default new Router({
       name: 'Index',
       component: Index,
       meta:{
-        title:"优选二手车"
+        title:"首页"
       }
     },
     {
@@ -26,7 +25,7 @@ export default new Router({
       name: 'Used',
       component: Used,
       meta:{
-        title:"关于我们"
+        title:"优选二手车"
       }
     },
     {
@@ -34,7 +33,7 @@ export default new Router({
       name: 'About',
       component: About,
       meta:{
-        title:"联系我们"
+        title:"关于我们"
       }
     },
     {
@@ -53,14 +52,6 @@ export default new Router({
         title:"详情"
       }
     },
-    {
-      path: '/searchpage',
-      name: 'SearchPage',
-      component: SearchPage,
-      meta:{
-        title:"搜索"
-      }
-    }
   ],
   scrollBehavior (to, from, savedPosition) {
     return { x: 0, y: 0 }
