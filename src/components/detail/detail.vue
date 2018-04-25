@@ -3,9 +3,9 @@
     <!--放大镜-->
     <div class="big-wrapper container">
       <div class="big-left">
-        <div class="zoom-wrapper">
-          <!--<img :src="baseImg+baseImgUrl" width="600" height="348" alt="">-->
-          <img-zoom :src=baseImg+baseImgUrl width="600" height="348" :bigsrc=baseImg+maxImg :configs="configs"></img-zoom>
+        <div class="zoom-wrapper" width="600" height="348">
+         <!-- <img-zoom :src=baseImg+baseImgUrl width="600" height="348" :bigsrc=baseImg+maxImg :configs="configs"></img-zoom>-->
+          <pic-zoom :url=baseImg+baseImgUrl :scale="3"></pic-zoom>
         </div>
         <div class="zoom-list">
           <i class="backward el-icon-arrow-left" :class="state==1?'disabled':'undisabled'" @click="rightMove"></i>
@@ -17,7 +17,7 @@
               <img :src=baseImg+item alt="">
             </li>
           </ul>
-        </div>
+        </div>n
 
       </div>
       <div class="big-right">
@@ -222,7 +222,8 @@
   </div>
 </template>
 <script>
-  import imgZoom from 'vue2.0-zoom'
+ /* import imgZoom from 'vue2.0-zoom'*/
+ import PicZoom from 'vue-piczoom'
   export default {
     data() {
       return {
@@ -369,7 +370,8 @@
       }
     },
     components: {
-      imgZoom
+      /*imgZoom*/
+      PicZoom
     }
   }
 </script>
