@@ -144,13 +144,17 @@
           this.total=res.data.meta.pagination.total
           this.pageSize=res.data.meta.pagination.per_page
           this.init()
+         /* let theUrl=window.location.href
+          if(theUrl.split("?")[1]){
+            this.getcarsbyUrl()
+          }*/
         }).catch(err=>{
           alert("网络错误")
         })
+
       },
       // pageSize 改变时会触发	每页条数size
       handleSizeChange (e){
-        console.log(e)
       },
       // currentPage 改变时会触发	当前页currentPage
       handleCurrentChange(pageNum){
@@ -160,7 +164,6 @@
           this.init()
           var min=this.$route.query.min
           var max=this.$route.query.max
-          console.log(min)
           this.$router.push({
             path:"/used",
             query:{
@@ -206,9 +209,7 @@
         }
       },
       searchhandleCurrentChange(page){
-        console.log(4)
         var carName=localStorage.getItem('carName')
-        console.log(this.searchnextUrlBase+page+'&value='+carName)
         this.axios.get(this.searchnextUrlBase+page+'&value='+carName).then(res=>{
           this.searchResult=""
           this.searchResult=res.data.data
@@ -308,25 +309,36 @@
         })
      //  console.log(this.currentPage,'当前的')
       },
+     /* getcarsbyUrl(){
+        let theUrl=window.location.href
+        let min=theUrl.split("?")[1].split("&")[0].split("=")[1]
+        let max=theUrl.split("?")[1].split("&")[1].split("=")[1]
+        let url="https://api.miaoche168.com/api/cars/price/"+min+'/'+max
+        this.axios.get(url).then(res=>{
+          this.nextUrlBase=url+'?page='
+          this.totalPage=res.data.meta.pagination.total_pages
+          console.log(this.totalPage);
+          this.cars=res.data.data
+          console.log(this.cars);
+          this.total=res.data.meta.pagination.total
+          this.pageSize=res.data.meta.pagination.per_page
+          this.init()
+
+        }).catch(err=>{
+          console.log(err)
+        })
+      },*/
+
       // f5刷新
       refresh(){
-        console.log('url',window.location.href)
-       /* window.onbeforeunload = function (e) {
-          e = e || window.event;
-
-          // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
-          alert(1)
-          return '关闭提示';
-        };*/
-       console.log(this.$route)
+        var url='https://api.miaoche168.com/api/cars/list'+this.$route.fullPath
+        console.log(url)
         window.onbeforeunload = function (e) {
           if (e.keyCode == 116) {
-            var url=this.$route
-            this.$router.push({
-              path:this.$route.fullPath
+            this.axios.get(url).then(res=>{
+              this.cars=res.data.data
+              this.init()
             })
-
-           /* window.location.reload(window.location.href);*/
           }
         }
         }
