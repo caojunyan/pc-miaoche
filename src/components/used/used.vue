@@ -82,12 +82,12 @@
       </div>
       <div class="page-wrapper container">
         <el-pagination
-          @current-change="handleCurrentChange"
           :current-page="currentPage"
+          @current-change="handleCurrentChange"
           background
           :page-size="pageSize"
           layout="prev, pager, next"
-          :total=" total"
+          :total="total"
           style="text-align: center;margin-top: 40px;padding-bottom: 40px">
         </el-pagination>
       </div>
@@ -118,8 +118,6 @@
         searchnextUrl:'',
         searchtotal:0,
         searchpageSize:0,
-
-
         brands:"",
       }
     },
@@ -158,9 +156,19 @@
       handleCurrentChange(pageNum){
         this.cars=""
         this.axios.get(this.nextUrlBase+pageNum).then(res=>{
-          console.log(res)
           this.cars=res.data.data
           this.init()
+          var min=this.$route.query.min
+          var max=this.$route.query.max
+          console.log(min)
+          this.$router.push({
+            path:"/used",
+            query:{
+              min:min,
+              max:max,
+              page:pageNum,
+            }
+          });
         }).catch(err=>{
           console.log(err)
         })
@@ -235,7 +243,12 @@
           this.total=res.data.meta.pagination.total
           this.pageSize=res.data.meta.pagination.per_page
           this.init()
-          console.log(res)
+          this.$router.push({
+            path:"/used",
+            query:{
+              value:brandSel
+            }
+          });
         }).catch(err=>{
           console.log(err)
         })
@@ -274,22 +287,28 @@
       },
       // 价格筛选
       selPrice(e){
-        var min=e.target.value.split("-")[0]
-        var max=e.target.value.split("-")[1]
+        var min=e.target.value.split("-")[0];
+        var max=e.target.value.split("-")[1];
         this.axios.get('https://api.miaoche168.com/api/cars/price/'+ min + '/' + max).then(res=>{
-          console.log(res)
           this.nextUrlBase="https://api.miaoche168.com/api/cars/price/"+min+'/'+max+'?page='
           this.totalPage=res.data.meta.pagination.total_pages
           this.cars=res.data.data
           this.total=res.data.meta.pagination.total
           this.pageSize=res.data.meta.pagination.per_page
-          this.currentPage=1
           this.init()
+          this.$router.push({
+            path:"/used",
+            query:{
+              min:min,
+              max:max,
+            }
+          });
         }).catch(err=>{
           console.log(err)
         })
-       console.log(this.currentPage,'当前的')
-      }
+     //  console.log(this.currentPage,'当前的')
+      },
+      // f5刷新
     },
     mounted(){
       // 获取二手车列表
