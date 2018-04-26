@@ -391,6 +391,25 @@
             }
           });
         })
+      }else if(query.type="used"){
+        this.axios.get('https://api.miaoche168.com/api/cars/list/used?include=images&page='+page).then(res=>{
+          this.nextUrlBase="https://api.miaoche168.com/api/cars/list/used?include=images&page="
+          this.totalPage=res.data.meta.pagination.total_pages
+          this.cars=res.data.data
+          this.total=res.data.meta.pagination.total
+          this.pageSize=res.data.meta.pagination.per_page
+          this.currentPage=res.data.meta.pagination.current_page
+          this.$router.push({
+            path:"/used",
+            query:{
+              type:"used",
+              page:page
+            }
+          });
+          this.init()
+        }).catch(err=>{
+          alert("网络错误")
+        })
       }
     }
   }
