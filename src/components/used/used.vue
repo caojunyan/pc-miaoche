@@ -101,6 +101,7 @@
     name: "used",
     data(){
       return{
+        carName:localStorage.getItem('carName'),
         cars:"",
         baseImg:"https://api.miaoche168.com/",
         nextUrlBase:"",
@@ -145,7 +146,7 @@
           this.$router.push({
             path:"/used",
             query:{
-             type:"used"
+              type:"used"
             }
           });
           this.init()
@@ -205,6 +206,7 @@
           this.searchtotalPage=someData.meta.pagination.total_pages
           this.searchtotal=someData.meta.pagination.total
           this.searchpageSize=someData.meta.pagination.per_page
+          this.searchcurrentPage=someData.meta.pagination.current_page
           this.$nextTick(() => {
             var cars = this.$refs.result.children
             for (var i = 1; i < cars.length; i++) {
@@ -213,13 +215,25 @@
               }
             }
           })
+          this.$router.push({
+            path:"/used",
+            query:{
+              page: '1',
+              type:"搜索",
+              carName:this.carName
+            }
+          });
         }
       },
       searchhandleCurrentChange(page){
-        var carName=localStorage.getItem('carName')
-        this.axios.get(this.searchnextUrlBase+page+'&value='+carName).then(res=>{
-          this.searchResult=""
+        this.searchResult=""
+        this.axios.get(this.searchnextUrlBase+page+'&value='+this.carName).then(res=>{
           this.searchResult=res.data.data
+          this.searchnextUrlBase='https://api.miaoche168.com/api/home/screen?include=images&value='+this.carName+'&page='
+          this.searchtotalPage=res.data.meta.pagination.total_pages
+          this.searchtotal=res.data.meta.pagination.total
+          this.searchpageSize=res.data.meta.pagination.per_page
+          this.searchcurrentPage=res.data.meta.pagination.current_page
           this.$nextTick(() => {
             var cars = this.$refs.result.children
             for (var i = 1; i < cars.length; i++) {
@@ -228,6 +242,14 @@
               }
             }
           })
+          this.$router.push({
+            path:"/used",
+            query:{
+              page: this.searchcurrentPage,
+              type:"搜索",
+              carName:this.carName
+            }
+          });
         }).catch(err=>{
           console.log(err)
           /* alert("网络错误")*/
@@ -306,10 +328,10 @@
           this.$router.push({
             path:"/used",
             query:{
-             min:min,
-             max:max,
-             page:'1',
-             type:"价格"
+              min:min,
+              max:max,
+              page:'1',
+              type:"价格"
             }
           });
         }).catch(err=>{
@@ -320,7 +342,7 @@
     },
     mounted(){
       // 获取二手车列表
-     /* this.getHomeList()*/
+      /* this.getHomeList()*/
       this.getBrands()
       // 判断是否有参数
       var query=this.$route.query
@@ -409,6 +431,35 @@
           this.init()
         }).catch(err=>{
           alert("网络错误")
+        })
+      }else if(query.type="搜索"){
+        this.axios.get(this.searchnextUrlBase+page+'&value='+this.carName).then(res=>{
+          this.searchResult=res.data.data
+          this.searchnextUrlBase='https://api.miaoche168.com/api/home/screen?include=images&value='+this.carName+'&page='
+          this.searchtotalPage=res.data.meta.pagination.total_pages
+          this.searchtotal=res.data.meta.pagination.total
+          this.searchpageSize=res.data.meta.pagination.per_page
+          this.searchcurrentPage=res.data.meta.pagination.current_page
+          this.$router.push({
+            path:"/used",
+            query:{
+              page: page,
+              type:"搜索",
+              carName:this.carName
+            }
+          });
+          this.$nextTick(() => {
+            var cars = this.$refs.result.children
+            for (var i = 1; i < cars.length; i++) {
+              if ((i + 1) % 3 == 2) {
+                cars[i].classList.add("middle-padding");
+              }
+            }
+          })
+
+        }).catch(err=>{
+          console.log(err)
+          /* alert("网络错误")*/
         })
       }
     }
