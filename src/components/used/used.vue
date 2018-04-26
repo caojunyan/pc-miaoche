@@ -110,7 +110,6 @@
         total:0,
         pageSize:0,
         usedShow:true,
-
         searchResult:"",
         searchnextUrlBase:"",
         searchcurrentPage:1,
@@ -133,7 +132,6 @@
               cars[i].classList.add("middle-padding");
             }
           }
-
         });
       },
       getHomeList(){
@@ -143,15 +141,11 @@
           this.cars=res.data.data
           this.total=res.data.meta.pagination.total
           this.pageSize=res.data.meta.pagination.per_page
+          this.currentPage=res.data.meta.pagination.currentPage
           this.init()
-         /* let theUrl=window.location.href
-          if(theUrl.split("?")[1]){
-            this.getcarsbyUrl()
-          }*/
         }).catch(err=>{
           alert("网络错误")
         })
-
       },
       // pageSize 改变时会触发	每页条数size
       handleSizeChange (e){
@@ -164,12 +158,15 @@
           this.init()
           var min=this.$route.query.min
           var max=this.$route.query.max
+          var type=this.$route.query.type
           this.$router.push({
             path:"/used",
             query:{
               min:min,
               max:max,
               page:pageNum,
+              type:type,
+              value:this.$route.query.value
             }
           });
         }).catch(err=>{
@@ -177,7 +174,6 @@
         })
       },
       toDetail(id){
-
         this.$router.push({
           name: "Detail",
           query: {
@@ -243,11 +239,14 @@
           this.totalPage=res.data.meta.pagination.total_pages
           this.total=res.data.meta.pagination.total
           this.pageSize=res.data.meta.pagination.per_page
+          this.currentPage=res.data.meta.pagination.currentPage
           this.init()
           this.$router.push({
             path:"/used",
             query:{
-              value:brandSel
+              value:brandSel,
+              page:'1',
+              type:"品牌"
             }
           });
         }).catch(err=>{
@@ -258,6 +257,14 @@
       selNewCar(e){
         var carType=e.target.value
         this.currentPage=1
+        this.$router.push({
+          path:"/used",
+          query:{
+            value:carType,
+            page:'1',
+            type:"车型"
+          }
+        });
         if(carType==="新车"){
           this.axios.get('https://api.miaoche168.com/api/cars/list/new').then(res=>{
             this.nextUrlBase="https://api.miaoche168.com/api/cars/list/used?page="
@@ -265,7 +272,9 @@
             this.cars=res.data.data
             this.total=res.data.meta.pagination.total
             this.pageSize=res.data.meta.pagination.per_page
+            this.currentPage=res.data.meta.pagination.currentPage
             this.init()
+
           }).catch(err=>{
             alert("网络错误")
           })
@@ -276,6 +285,7 @@
             this.cars=res.data.data
             this.total=res.data.meta.pagination.total
             this.pageSize=res.data.meta.pagination.per_page
+            this.currentPage=res.data.meta.pagination.currentPage
             this.init()
           }).catch(err=>{
             alert("网络错误")
@@ -296,60 +306,118 @@
           this.cars=res.data.data
           this.total=res.data.meta.pagination.total
           this.pageSize=res.data.meta.pagination.per_page
+          this.currentPage=res.data.meta.pagination.currentPage
+          this.init()
+          this.$router.push({
+            path:"/used",
+            query:{
+             min:min,
+             max:max,
+             page:this.currentPage,
+             type:"价格"
+            }
+          });
+        }).catch(err=>{
+          console.log(err)
+        })
+        //  console.log(this.currentPage,'当前的')
+      },
+    },
+    mounted(){
+      // 获取二手车列表
+     /* this.getHomeList()*/
+      this.getBrands()
+      // 判断是否有参数
+      var query=this.$route.query
+      var url=this.$route.fullPath
+      var min=query.min
+      var max=query.max
+      var page=query.page
+      var brandSel=query.value
+      if(JSON.stringify(query)=="{}"){
+        this.getHomeList()
+      }else if(query.type=="价格"){
+        this.axios.get('https://api.miaoche168.com/api/cars/price/'+ min + '/' + max+'?page='+page).then(res=>{
+          this.cars=res.data.data
+          this.nextUrlBase="https://api.miaoche168.com/api/cars/price/"+min+'/'+max+'?page='
+          this.totalPage=res.data.meta.pagination.total_pages
+          this.total=res.data.meta.pagination.total
+          this.pageSize=res.data.meta.pagination.per_page
+          this.currentPage=res.data.meta.pagination.currentPage
           this.init()
           this.$router.push({
             path:"/used",
             query:{
               min:min,
               max:max,
+              page:this.currentPage,
+              type:"价格"
             }
           });
         }).catch(err=>{
           console.log(err)
         })
-     //  console.log(this.currentPage,'当前的')
-      },
-     /* getcarsbyUrl(){
-        let theUrl=window.location.href
-        let min=theUrl.split("?")[1].split("&")[0].split("=")[1]
-        let max=theUrl.split("?")[1].split("&")[1].split("=")[1]
-        let url="https://api.miaoche168.com/api/cars/price/"+min+'/'+max
-        this.axios.get(url).then(res=>{
-          this.nextUrlBase=url+'?page='
-          this.totalPage=res.data.meta.pagination.total_pages
-          console.log(this.totalPage);
+      }else if(query.type=="品牌"){
+        console.log(query.brands)
+        this.axios.get('https://api.miaoche168.com/api/home/brands?value=' + brandSel).then(res=>{
           this.cars=res.data.data
-          console.log(this.cars);
+          this.nextUrlBase='https://api.miaoche168.com/api/home/brands?value=' + brandSel+'&page='
+          this.totalPage=res.data.meta.pagination.total_pages
           this.total=res.data.meta.pagination.total
           this.pageSize=res.data.meta.pagination.per_page
           this.init()
-
+          this.$router.push({
+            path:"/used",
+            query:{
+              value:brandSel,
+              page:'1',
+              type:"品牌"
+            }
+          });
         }).catch(err=>{
           console.log(err)
         })
-      },*/
-
-      // f5刷新
-      refresh(){
-        var url='https://api.miaoche168.com/api/cars/list'+this.$route.fullPath
-        console.log(url)
-        window.onbeforeunload = function (e) {
-          if (e.keyCode == 116) {
-            this.axios.get(url).then(res=>{
-              this.cars=res.data.data
+      }else if(query.type=="车型"){
+        if(query.value='新车'){
+          this.axios.get('https://api.miaoche168.com/api/cars/list/new').then(res=> {
+            this.nextUrlBase = "https://api.miaoche168.com/api/cars/list/used?page="
+            this.totalPage = res.data.meta.pagination.total_pages
+            this.cars = res.data.data
+            this.total = res.data.meta.pagination.total
+            this.pageSize = res.data.meta.pagination.per_page
+            this.init()
+            this.$router.push({
+              path:"/used",
+              query:{
+                value:"新车",
+                page:this.currentPage,
+                type:"车型"
+              }
+            });
+          })
+        }else if(query.value='二手车'){
+          console.log(44)
+            this.axios.get('https://api.miaoche168.com/api/cars/list/used').then(res=> {
+              this.nextUrlBase = "https://api.miaoche168.com/api/cars/list/used?page="
+              this.totalPage = res.data.meta.pagination.total_pages
+              this.cars = res.data.data
+              this.total = res.data.meta.pagination.total
+              this.pageSize = res.data.meta.pagination.per_page
+              this.currentPage = res.data.meta.pagination.currentPage
+              this.$router.push({
+                path:"/used",
+                query:{
+                  value:"二手车",
+                  page:this.currentPage,
+                  type:"车型"
+                }
+              });
               this.init()
             })
-          }
+         /* this.getHomeList()*/
         }
-        }
-    },
-    mounted(){
-      // 获取二手车列表
-      this.getHomeList()
-      this.getBrands()
-      this.refresh()
+      }
     }
-
   }
 </script>
 
@@ -392,17 +460,12 @@
     margin-left: 40px;
     padding-left: 10px;
     top:5px;
-
   }
   .sorting-box ul li select option{
     outline: none;
     width: 100%;
     height: 30px;
   }
-
-
-
-
   .search-price>input{
     width: 70px;
     height: 25px;
@@ -415,9 +478,6 @@
     padding-right: 40px;
     position: relative;
   }
-
-
-
   .cars-content{
     width: 100%;
     min-height: 500px;
@@ -509,10 +569,8 @@
   .el-pagination.is-background .el-pager li:not(.disabled).active{
     background-color: #FF6600;
   }
-
   /*搜索结果*/
   .search-result{
-
   }
   .result-content{
     width: 100%;
