@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import 'babel-polyfill'
 import VueLazyLoad from 'vue-lazyload'
 import { Pagination, Icon,Message} from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';

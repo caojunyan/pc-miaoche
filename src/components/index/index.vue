@@ -291,7 +291,6 @@
       // 判断参数
       var query=this.$route.query
       var page=query.page
-      console.log(query)
       if(JSON.stringify(query)=="{}"){
         this.getHomeList()
       }else if(query.type="搜索"){

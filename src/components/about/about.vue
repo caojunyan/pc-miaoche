@@ -27,10 +27,11 @@
               addMarker();//向地图中添加marker
             }
 
-            //创建地图函数：
+            //创建地图函数：经度:114.250834
+            /*纬度:30.607912*/
             function createMap(){
               var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
-              var point = new BMap.Point(120.402934,36.325076);//定义一个中心点坐标
+              var point = new BMap.Point(114.250834,30.607912);//定义一个中心点坐标
               map.centerAndZoom(point,14);//设定地图的中心点和坐标并将地图显示在地图容器中
               window.map = map;//将map变量存储在全局
             }
@@ -57,7 +58,7 @@
             }
             //标注点数组
             var markerArr =
-              [{title:"青岛农业大学李传涌",content:"我的备注",point:"120.402934|36.325076",isOpen:0,icon:{w:21,h:21,l:0,t:0,x:6,lb:5}}];
+              [{title:"秒车网",content:"秒车网科技公司",point:"114.250834|30.607912",isOpen:0,icon:{w:21,h:21,l:0,t:0,x:6,lb:5}}];
             //创建marker
             function addMarker(){
               for(var i=0;i<markerArr.length;i++){
@@ -72,8 +73,8 @@
                 marker.setLabel(label);
                 map.addOverlay(marker);
                 label.setStyle({
-                  borderColor:"#808080",
-                  color:"#333",
+                  borderColor:"red",
+                  color:"red",
                   cursor:"pointer"
                 });
 
