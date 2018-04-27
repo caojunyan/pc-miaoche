@@ -190,7 +190,7 @@
       },
       // 查看更多
       addMore(){
-        this.nextUrl=this.nextUrlBase+this.currentPage
+        this.nextUrl='https://api.miaoche168.com/api/home/cars/used?page='+(this.currentPage+1)
         if(this.currentPage<=this.totalPage){
           this.currentPage=this.currentPage+1
           this.axios.get(this.nextUrl).then(res=>{
@@ -201,8 +201,8 @@
             this.$router.push({
               path:"/index",
               query:{
-                page: this.currentPage,
-                type:"index",
+               /* page: this.currentPage,
+                type:"index",*/
               }
             });
           }).catch(err=>{
@@ -297,14 +297,13 @@
         this.axios.get('https://api.miaoche168.com/api/home/screen?include=images&page='+page+'&value='+this.carName).then(res=>{
           this.searchResult=res.data.data
           this.usedShow=false
-
-          this.searchnextUrlBase="https://api.miaoche168.com/api/home/screen?page="
+          this.searchnextUrlBase='https://api.miaoche168.com/api/home/screen?include=images'+'&value='+this.carName+"page="
           this.searchtotalPage=res.data.meta.pagination.total_pages
           this.total=res.data.meta.pagination.total
           this.pageSize=res.data.meta.pagination.per_page
           this.currentPage=res.data.meta.pagination.current_page
           this.$router.push({
-            path:"/搜索",
+            path:"/index",
             query:{
               page: page,
               type:"搜索",
@@ -321,7 +320,7 @@
           })
         })
       }else if(query.type="index"){
-        this.axios.get('https://api.miaoche168.com/api/home/cars/used?page='+page).then(res=>{
+        this.axios.get('https://api.miaoche168.com/api/home/cars/used?include=images&page='+page).then(res=>{
              this.nextUrlBase="https://api.miaoche168.com/api/home/cars/used?page="
              this.totalPage=res.data.meta.pagination.total_pages
              this.currentPage=res.data.meta.pagination.current_page
@@ -332,8 +331,8 @@
           this.$router.push({
             path:"/index",
             query:{
-              page: this.currentPage,
-              type:"index",
+              /*page: this.currentPage,
+              type:"index",*/
             }
           });
         }).catch(err=>{
