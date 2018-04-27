@@ -180,8 +180,8 @@
           this.$router.push({
             path:"/index",
             query:{
-              page: this.currentPage,
-              type:"index",
+             /* page: this.currentPage,
+              type:"index",*/
             }
           });
         }).catch(err=>{
@@ -304,7 +304,7 @@
           this.pageSize=res.data.meta.pagination.per_page
           this.currentPage=res.data.meta.pagination.current_page
           this.$router.push({
-            path:"/index",
+            path:"/搜索",
             query:{
               page: page,
               type:"搜索",
@@ -321,12 +321,12 @@
           })
         })
       }else if(query.type="index"){
-        this.axios.get('https://api.miaoche168.com/api/home/cars/used').then(res=>{
-          /*   this.nextUrlBase="https://api.miaoche168.com/api/home/cars/used?page="
+        this.axios.get('https://api.miaoche168.com/api/home/cars/used?page='+page).then(res=>{
+             this.nextUrlBase="https://api.miaoche168.com/api/home/cars/used?page="
              this.totalPage=res.data.meta.pagination.total_pages
              this.currentPage=res.data.meta.pagination.current_page
              this.total=res.data.meta.pagination.total
-             this.pageSize=res.data.meta.pagination.per_page*/
+             this.pageSize=res.data.meta.pagination.per_page
           this.cars=res.data.data
           this.init()
           this.$router.push({
