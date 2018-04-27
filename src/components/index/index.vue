@@ -9,9 +9,9 @@
     <div class="container">
       <!--搜索框-->
       <searchBox v-on:child-say="listenTo"></searchBox>
-
-      <div class="search-result">
-        <div class="result-content" ref="result">
+     <!-- 搜索部分-->
+      <div class="search-result" >
+        <div class="result-content" ref="result" v-show="!usedShow" >
           <dl v-for="(item,index) in searchResult" :key="index" @click="toDetail(item.id)">
             <dt>
               <img v-lazy=baseImg+item.imgUrl alt="" class="car-img">
@@ -39,7 +39,7 @@
           </el-pagination>
         </div>
       </div>
-
+      <!--列表部分-->
       <div class="cars-wrapper"  v-show="usedShow">
         <!--title-->
         <div class="cars-title ">
@@ -63,7 +63,7 @@
         </div>
       </div>
       <!--更多-->
-      <div class="more-content" v-show="usedShow">
+      <div class="more-content" v-show="usedShow"  >
         <span @click="addMore" v-if="numShow">查看更多</span>
         <span @click="addMore" v-if="!numShow">没有更多数据了</span>
       </div>
@@ -89,6 +89,9 @@
           nextUrl:'',
           numShow:true,
           usedShow:true,
+          titleShow:true,
+          moreShow:true,
+          pageShow:false,
 
           searchResult:"",
           searchnextUrlBase:"",
@@ -105,20 +108,8 @@
       },
       methods:{
         indexData(indexData){
-          this.nextUrlBase="https://api.miaoche168.com/api/home/cars/used?page="
-          this.totalPage=indexData.meta.pagination.total_pages
-          this.currentPage=indexData.meta.pagination.current_page
-          this.total=indexData.meta.pagination.total
-          this.pageSize=indexData.meta.pagination.per_page
           this.cars=indexData.data
           this.init()
-          this.$router.push({
-            path:"/index",
-            query:{
-              page: this.currentPage,
-              type:"index",
-            }
-          });
         },
         init(){
           this.$nextTick(() => {
@@ -221,7 +212,6 @@
            }
         },
         listenTo(someData){
-
           if(someData.data.length===0){
             this.usedShow=true
             this.$message({
@@ -321,7 +311,24 @@
             this.init()
           })
         }else if(query.type="index"){
-          this.getHomeList()
+          this.axios.get('https://api.miaoche168.com/api/home/cars/used').then(res=>{
+         /*   this.nextUrlBase="https://api.miaoche168.com/api/home/cars/used?page="
+            this.totalPage=res.data.meta.pagination.total_pages
+            this.currentPage=res.data.meta.pagination.current_page
+            this.total=res.data.meta.pagination.total
+            this.pageSize=res.data.meta.pagination.per_page*/
+            this.cars=res.data.data
+            this.init()
+            this.$router.push({
+              path:"/index",
+              query:{
+                page: this.currentPage,
+                type:"index",
+              }
+            });
+          }).catch(err=>{
+            alert("网络错误")
+          })
         }
       }
 

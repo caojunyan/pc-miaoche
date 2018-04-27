@@ -52,14 +52,19 @@
             }
           },
           search(){
-            var carName=this.carName
-            localStorage.setItem('carName', this.carName);
-            this.axios.get("https://api.miaoche168.com/api/home/screen?include=images&value="+carName).then(res=>{
-              this.searchCars=res.data
-              this.$emit('child-say',this.searchCars)
-            }).catch(err=>{
-              console.log(err)
-            })
+            if(this.carName==""){
+              alert("搜索内容不能为空")
+              return false
+            }else{
+              var carName=this.carName
+              localStorage.setItem('carName', this.carName);
+              this.axios.get("https://api.miaoche168.com/api/home/screen?include=images&value="+carName).then(res=>{
+                this.searchCars=res.data
+                this.$emit('child-say',this.searchCars)
+              }).catch(err=>{
+                console.log(err)
+              })
+            }
           }
         },
       mounted(){
