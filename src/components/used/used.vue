@@ -139,19 +139,21 @@
         });
       },
       headerData(headerData){
-        this.nextUrlBase="https://api.miaoche168.com/api/cars/list/used?include=images&page="
-        this.totalPage=headerData.meta.pagination.total_pages
         this.cars=headerData.data
+        this.totalPage=headerData.meta.pagination.total_pages
+
         this.total=headerData.meta.pagination.total
         this.pageSize=headerData.meta.pagination.per_page
         this.currentPage=headerData.meta.pagination.current_page
-        this.$router.push({
+        this.init()
+       /* this.nextUrlBase="https://api.miaoche168.com/api/cars/list/used?include=images&page="
+        */
+     /*   this.$router.push({
           path:"/used",
           query:{
-            /* type:"used"*/
+            /!* type:"used"*!/
           }
-        });
-        this.init()
+        });*/
       },
       getHomeList(){
         this.axios.get('https://api.miaoche168.com/api/cars/list/used?include=images').then(res=>{
