@@ -79,7 +79,7 @@
   export default {
     data(){
       return{
-        carName:localStorage.getItem('carName'),
+        carName:this.$route.query.carName,
         bannerImg:'',
         cars:"",
         baseImg:"https://api.miaoche168.com/",
@@ -213,19 +213,20 @@
         }
       },
       listenTo(someData){
-        if(someData.data.length===0){
+        console.log(someData)
+        if(someData.searchCars.data.length===0){
           this.usedShow=true
           this.$message({
             message:"没有找到您要的车"
           })
         }else{
           this.usedShow=false
-          this.searchResult=someData.data
+          this.searchResult=someData.searchCars.data
           this.searchnextUrlBase="https://api.miaoche168.com/api/home/screen?page="
-          this.searchtotalPage=someData.meta.pagination.total_pages
-          this.total=someData.meta.pagination.total
-          this.pageSize=someData.meta.pagination.per_page
-          this.searchcurrentPage=someData.meta.pagination.current_page
+          this.searchtotalPage=someData.searchCars.meta.pagination.total_pages
+          this.total=someData.searchCars.meta.pagination.total
+          this.pageSize=someData.searchCars.meta.pagination.per_page
+          this.searchcurrentPage=someData.searchCars.meta.pagination.current_page
           this.$nextTick(() => {
             var cars = this.$refs.result.children
             for (var i = 1; i < cars.length; i++) {
@@ -234,20 +235,20 @@
               }
             }
           })
+          this.carName=someData.carName
           this.$router.push({
             path:"/index",
             query:{
               page: '1',
               type:"搜索",
-              carName:this.carName
+              carName:someData.carName
             }
           });
         }
       },
       handleCurrentChange(page){
-        var carName=localStorage.getItem('carName')
-
-        this.axios.get(this.searchnextUrlBase+page+'&value='+carName).then(res=>{
+        console.log(this.$route.query)
+        this.axios.get(this.searchnextUrlBase+page+'&value='+this.carName).then(res=>{
           this.searchResult=res.data.data
           this.searchnextUrlBase="https://api.miaoche168.com/api/home/screen?page="
           this.searchtotalPage=res.data.meta.pagination.total_pages

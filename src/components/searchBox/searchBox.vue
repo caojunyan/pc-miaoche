@@ -5,7 +5,7 @@
           <input type="text" placeholder="输入手机号" v-model="subBox.phone"><span @click="appointment">免费预约</span>
         </div>
         <div class="search-right">
-          <img src="./search-icon.png" alt=""><input type="text" placeholder="搜索你想要的车" v-model="carName"><span @click="search">搜索</span>
+          <img src="./search-icon.png" alt=""><input type="text" placeholder="搜索你想要的车" v-model="childData.carName"><span @click="search">搜索</span>
         </div>
       </div>
     </div>
@@ -16,7 +16,6 @@
         name: "search-box",
         data(){
           return{
-            carName:'',
             subBox:{
               name: String(Date.parse(new Date())), //姓名
               gender: "", //性别
@@ -26,7 +25,10 @@
               creditStatus: "", //信用状态 --- 字符型
               key: ""
             },
-            searchCars:""
+            childData:{
+              carName:"",
+              searchCars:""
+            }
           }
         },
         methods:{
@@ -52,15 +54,13 @@
             }
           },
           search(){
-            if(this.carName==""){
+            if(this.childData.carName==""){
               alert("搜索内容不能为空")
               return false
             }else{
-              var carName=this.carName
-              localStorage.setItem('carName', this.carName);
-              this.axios.get("https://api.miaoche168.com/api/home/screen?include=images&value="+carName).then(res=>{
-                this.searchCars=res.data
-                this.$emit('child-say',this.searchCars)
+              this.axios.get("https://api.miaoche168.com/api/home/screen?include=images&value="+this.childData.carName).then(res=>{
+                this.childData.searchCars=res.data
+                this.$emit('child-say',this.childData)
               }).catch(err=>{
                 console.log(err)
               })

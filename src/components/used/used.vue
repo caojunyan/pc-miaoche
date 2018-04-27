@@ -103,7 +103,7 @@
     name: "used",
     data(){
       return{
-        carName:localStorage.getItem('carName'),
+        carName:this.$route.query.carName,
         cars:"",
         baseImg:"https://api.miaoche168.com/",
         nextUrlBase:"",
@@ -211,19 +211,20 @@
         })
       },
       listenTo(someData){
-        if(someData.data.length===0){
+        console.log(someData)
+        if(someData.searchCars.data.length===0){
           this.usedShow=true
           this.$message({
             message:"没有找到您要的车"
           })
         }else{
           this.usedShow=false
-          this.searchResult=someData.data
+          this.searchResult=someData.searchCars.data
           this.searchnextUrlBase="https://api.miaoche168.com/api/home/screen?page="
-          this.searchtotalPage=someData.meta.pagination.total_pages
-          this.searchtotal=someData.meta.pagination.total
-          this.searchpageSize=someData.meta.pagination.per_page
-          this.searchcurrentPage=someData.meta.pagination.current_page
+          this.searchtotalPage=someData.searchCars.meta.pagination.total_pages
+          this.searchtotal=someData.searchCars.meta.pagination.total
+          this.searchpageSize=someData.searchCars.meta.pagination.per_page
+          this.searchcurrentPage=someData.searchCars.meta.pagination.current_page
           this.$nextTick(() => {
             var cars = this.$refs.result.children
             for (var i = 1; i < cars.length; i++) {
@@ -232,12 +233,13 @@
               }
             }
           })
+          this.carName=someData.carName
           this.$router.push({
             path:"/used",
             query:{
               page: '1',
               type:"搜索",
-              carName:this.carName
+              carName:someData.carName
             }
           });
         }
