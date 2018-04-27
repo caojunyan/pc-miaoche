@@ -1,5 +1,6 @@
 <template>
   <div class="detail">
+    <my-header ></my-header>
     <!--放大镜-->
     <div class="big-wrapper container">
       <div class="big-left">
@@ -220,6 +221,7 @@
   </div>
 </template>
 <script>
+  import myHeader from "../header/header"
  import PicZoom from 'vue-piczoom'
   export default {
     data() {
@@ -367,7 +369,8 @@
       }
     },
     components: {
-      PicZoom
+      PicZoom,
+      myHeader,
     }
   }
 </script>
@@ -376,7 +379,6 @@
     width 100%
     min-height 800px
     background #F1F1F1
-    padding-top 30px
     .big-wrapper
       height 468px
       background #fff

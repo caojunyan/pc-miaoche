@@ -1,5 +1,6 @@
 <template>
     <div class="about">
+      <my-header ></my-header>
       <div class="title container">关于我们</div>
       <div class="address container">
         <div class="map" id="dituContent"></div>
@@ -13,6 +14,7 @@
 </template>
 
 <script>
+  import myHeader from "../header/header"
     export default {
         name: "about",
         methods:{
@@ -120,6 +122,9 @@
         },
       mounted(){
           this.map()
+      },
+      components:{
+        myHeader
       }
     }
 </script>
@@ -129,7 +134,6 @@
   width 100%
   height 610px
   background #F1F1F1
-  padding-top 50px
   .title
     height 52px
     background #3D3834
@@ -137,6 +141,7 @@
     font-size 16px
     line-height 52px
     padding-left 10px
+    margin-top 50px
   .address
     background #fff
     margin-top 10px

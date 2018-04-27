@@ -1,10 +1,10 @@
 <template>
 <div class="header">
   <ul >
-    <li>
+    <li @click="toIndex">
       <router-link to="/index">首页</router-link>
     </li>
-    <li>
+    <li @click="toUsed">
       <router-link to="/used">优选二手车</router-link>
     </li>
     <li>
@@ -19,7 +19,30 @@
 
 <script>
     export default {
-
+      methods:{
+        data(){
+          return{
+            initData:"",
+            indexData:""
+          }
+        },
+        toUsed(){
+          this.axios.get('https://api.miaoche168.com/api/cars/list/used?include=images').then(res=>{
+           this.initData=res.data
+            this.$emit('header-say',this.initData)
+          }).catch(err=>{
+            alert("网络错误")
+          })
+        },
+        toIndex(){
+          this.axios.get('https://api.miaoche168.com/api/home/cars/used').then(res=>{
+            this.indexData=res.data
+            this.$emit('header-index-say',this.indexData)
+          }).catch(err=>{
+            alert("网络错误")
+          })
+        },
+      }
     }
 </script>
 

@@ -1,5 +1,6 @@
 <template>
 <div class="index">
+  <my-header   v-on:header-index-say="indexData" ></my-header>
   <!--banner图-->
   <div id="slider-3">
     <img :src="bannerImg" alt="">
@@ -73,10 +74,12 @@
 </template>
 
 <script>
+  import myHeader from "../header/header"
   import searchBox from "../searchBox/searchBox"
     export default {
       data(){
         return{
+          carName:localStorage.getItem('carName'),
           bannerImg:'',
           cars:"",
           baseImg:"https://api.miaoche168.com/",
@@ -97,9 +100,26 @@
         }
       },
       components:{
-        searchBox
+        searchBox,
+        myHeader
       },
       methods:{
+        indexData(indexData){
+          this.nextUrlBase="https://api.miaoche168.com/api/home/cars/used?page="
+          this.totalPage=indexData.meta.pagination.total_pages
+          this.currentPage=indexData.meta.pagination.current_page
+          this.total=indexData.meta.pagination.total
+          this.pageSize=indexData.meta.pagination.per_page
+          this.cars=indexData.data
+          this.init()
+          this.$router.push({
+            path:"/index",
+            query:{
+              page: this.currentPage,
+              type:"index",
+            }
+          });
+        },
         init(){
           this.$nextTick(() => {
             var cars=this.$refs.content.children
@@ -160,8 +180,18 @@
           this.axios.get('https://api.miaoche168.com/api/home/cars/used').then(res=>{
             this.nextUrlBase="https://api.miaoche168.com/api/home/cars/used?page="
             this.totalPage=res.data.meta.pagination.total_pages
+            this.currentPage=res.data.meta.pagination.current_page
+            this.total=res.data.meta.pagination.total
+            this.pageSize=res.data.meta.pagination.per_page
             this.cars=res.data.data
             this.init()
+            this.$router.push({
+              path:"/index",
+              query:{
+                page: this.currentPage,
+                type:"index",
+              }
+            });
           }).catch(err=>{
             alert("网络错误")
           })
@@ -176,6 +206,13 @@
                  this.cars.push(res.data.data[i])
                }
               this.init()
+               this.$router.push({
+                 path:"/index",
+                 query:{
+                   page: this.currentPage,
+                   type:"index",
+                 }
+               });
              }).catch(err=>{
                 alert("网络错误")
              })
@@ -184,18 +221,20 @@
            }
         },
         listenTo(someData){
+
           if(someData.data.length===0){
             this.usedShow=true
             this.$message({
               message:"没有找到您要的车"
             })
           }else{
-            this.usedShow=false
+            this.usedShow=!this.usedShow
             this.searchResult=someData.data
             this.searchnextUrlBase="https://api.miaoche168.com/api/home/screen?page="
             this.searchtotalPage=someData.meta.pagination.total_pages
             this.total=someData.meta.pagination.total
             this.pageSize=someData.meta.pagination.per_page
+            this.searchcurrentPage=someData.meta.pagination.current_page
             this.$nextTick(() => {
               var cars = this.$refs.result.children
               for (var i = 1; i < cars.length; i++) {
@@ -204,13 +243,26 @@
                 }
               }
             })
+            this.$router.push({
+              path:"/index",
+              query:{
+                page: '1',
+                type:"搜索",
+                carName:this.carName
+              }
+            });
           }
         },
         handleCurrentChange(page){
           var carName=localStorage.getItem('carName')
+
           this.axios.get(this.searchnextUrlBase+page+'&value='+carName).then(res=>{
-            this.searchResult=""
             this.searchResult=res.data.data
+            this.searchnextUrlBase="https://api.miaoche168.com/api/home/screen?page="
+            this.searchtotalPage=res.data.meta.pagination.total_pages
+            this.total=res.data.meta.pagination.total
+            this.pageSize=res.data.meta.pagination.per_page
+            this.currentPage=res.data.meta.pagination.current_page
             this.$nextTick(() => {
               var cars = this.$refs.result.children
               for (var i = 1; i < cars.length; i++) {
@@ -219,6 +271,14 @@
                 }
               }
             })
+            this.$router.push({
+              path:"/index",
+              query:{
+                page:page,
+                type:"搜索",
+                carName:this.carName
+              }
+            });
           }).catch(err=>{
             /* alert("网络错误")*/
           })
@@ -236,7 +296,33 @@
       },
       mounted(){
         this.getBanner()
-        this.getHomeList()
+        // 判断参数
+        var query=this.$route.query
+        var page=query.page
+        console.log(query)
+        if(JSON.stringify(query)=="{}"){
+          this.getHomeList()
+        }else if(query.type="搜索"){
+          this.axios.get('https://api.miaoche168.com/api/home/screen?include=images&page='+page+'&value='+this.carName).then(res=>{
+            this.cars=res.data.data
+            this.nextUrlBase='https://api.miaoche168.com/api/home/screen?include=images&value='+this.carName+'&page='
+            this.totalPage=res.data.meta.pagination.total_pages
+            this.total=res.data.meta.pagination.total
+            this.pageSize=res.data.meta.pagination.per_page
+            this.currentPage=res.data.meta.pagination.current_page
+            this.$router.push({
+              path:"/index",
+              query:{
+                page: page,
+                type:"搜索",
+                carName:this.carName
+              }
+            });
+            this.init()
+          })
+        }else if(query.type="index"){
+          this.getHomeList()
+        }
       }
 
     }
@@ -335,6 +421,7 @@
     border-bottom: 1px solid #DADADA;
     text-align: center;
     position: relative;
+    overflow: hidden;
   }
   .car-img{
     text-align: center;
