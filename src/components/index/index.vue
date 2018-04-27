@@ -108,6 +108,7 @@
     },
     methods:{
       indexData(indexData){
+        this.usedShow=true
         this.cars=indexData.data
         this.init()
       },
