@@ -82,13 +82,6 @@
       myHeader
     },
     methods:{
-      indexData(indexData){
-        this.usedShow=true
-        this.cars=indexData.data
-        this.currentPage=1
-        this.totalPage=indexData.meta.pagination.total_pages
-        this.init()
-      },
       init(){
         this.$nextTick(() => {
           var cars=this.$refs.content.children
@@ -133,6 +126,31 @@
             },30);
           };
         });
+      },
+      // 搜索数据赋值
+      searchData(res){
+        this.cars=res.data.data
+        this.totalPage=res.data.meta.pagination.total_pages
+        this.total=res.data.meta.pagination.total
+        this.pageSize=res.data.meta.pagination.per_page
+        this.currentPage=res.data.meta.pagination.current_page
+        this.nextUrlBase='https://api.miaoche168.com/api/home/screen?include=images'+'&value='+this.carName+"&page="
+        this.init()
+        this.$router.push({
+          path:"/index",
+          query:{
+            page:  this.currentPage,
+            type:"搜索",
+            carName:this.carName
+          }
+        });
+      },
+      indexData(indexData){
+        this.usedShow=true
+        this.cars=indexData.data
+        this.currentPage=1
+        this.totalPage=indexData.meta.pagination.total_pages
+        this.init()
       },
       // 获取二手车列表
       getHomeList(){
@@ -234,58 +252,27 @@
         })
       },
       // 刷新的处理
-      refrensh(){
-
+      refresh(){
+        // 判断参数
+        var query=this.$route.query
+        var page=query.page
+        if(JSON.stringify(query)=="{}"){
+          this.getHomeList()
+        }else if(query.type=="搜索"){
+          this.usedShow=false
+          this.axios.get('https://api.miaoche168.com/api/home/screen?include=images&page='+page+'&value='+this.carName).then(res=>{
+            this.searchData(res)
+          })
+        }else if(query.type=="index"){
+          this.getHomeList()
+        }
       }
     },
     mounted(){
       getBanner().then(res=>{
         this.bannerImg='https://api.miaoche168.com/'+res
       })
-      // 判断参数
-      var query=this.$route.query
-      var page=query.page
-      if(JSON.stringify(query)=="{}"){
-        this.getHomeList()
-      }else if(query.type=="搜索"){
-        this.usedShow=false
-        this.axios.get('https://api.miaoche168.com/api/home/screen?include=images&page='+page+'&value='+this.carName).then(res=>{
-          this.cars=res.data.data
-          this.totalPage=res.data.meta.pagination.total_pages
-          this.total=res.data.meta.pagination.total
-          this.pageSize=res.data.meta.pagination.per_page
-          this.currentPage=res.data.meta.pagination.current_page
-          this.nextUrlBase='https://api.miaoche168.com/api/home/screen?include=images'+'&value='+this.carName+"&page="
-          this.$router.push({
-            path:"/index",
-            query:{
-              page: page,
-              type:"搜索",
-              carName:this.carName
-            }
-          });
-          this.init()
-        })
-      }else if(query.type=="index"){
-        this.axios.get('https://api.miaoche168.com/api/home/cars/used?include=images&page='+page).then(res=>{
-          this.nextUrlBase="https://api.miaoche168.com/api/home/cars/used?page="
-          this.totalPage=res.data.meta.pagination.total_pages
-          this.currentPage=res.data.meta.pagination.current_page
-          this.total=res.data.meta.pagination.total
-          this.pageSize=res.data.meta.pagination.per_page
-          this.cars=res.data.data
-          this.init()
-          this.$router.push({
-            path:"/index",
-            query:{
-              /*page: this.currentPage,
-              type:"index",*/
-            }
-          });
-        }).catch(err=>{
-          alert("网络错误")
-        })
-      }
+      this.refresh()
     }
   }
 </script>
@@ -303,6 +290,23 @@
     background: #F1F1F1;
     padding-top: 58px;
   }
+  .el-pagination.is-background .el-pager li:not(.disabled).active{
+    background: #FF6600;
+    color: #fff;
+  }
+  .el-pagination.is-background .el-pager li:not(.disabled):hover{
+    color: #fff;
+  }
+  .background .el-pager li:not(.disabled).active {
+    background-color: #FF6600;
+    color: #fff;
+  }
+  .el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-color: #FF6600;
+    color: #fff;
+  }
+
+
   /*搜索结果*/
   .search-result{
   }
@@ -462,5 +466,22 @@
     line-height: 50px;
     background: #FF6600;
     cursor: pointer;
+  }
+
+  .el-pagination.is-background .el-pager li:not(.disabled).active{
+    background: #FF6600;
+    color: #fff;
+  }
+  .el-pagination.is-background .el-pager li:not(.disabled):hover{
+    color: #fff;
+    background-color: #FF6600;
+  }
+  .background .el-pager li:not(.disabled).active {
+    background-color: #FF6600;
+    color: #fff;
+  }
+  .el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-color: #FF6600;
+    color: #fff;
   }
 </style>

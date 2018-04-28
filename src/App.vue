@@ -27,10 +27,19 @@ ul,li,p,h1,h2,h3,h4,h5,h6,dl,dt,dd {
   list-style:none;
 }
 .el-pagination.is-background .el-pager li:not(.disabled).active{
-  background: #FF6600;
-  color: #fff;
+  background: #FF6600 !important;
+  color: #fff !important;
 }
 .el-pagination.is-background .el-pager li:not(.disabled):hover{
-  color: #606266;
+  color: #fff !important;
+  background-color: #FF6600 !important;
+}
+.background .el-pager li:not(.disabled).active {
+  background-color: #FF6600 !important;
+  color: #fff !important;
+}
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: #FF6600 !important;
+  color: #fff !important;
 }
 </style>

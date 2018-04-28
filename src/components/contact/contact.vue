@@ -93,7 +93,7 @@
             border none
             outline none
             font-size 14px
-            height 30px
+            height 24px
           label
             font-size 16px
             color #999999

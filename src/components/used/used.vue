@@ -285,24 +285,6 @@
       var carType=query.value
       if(JSON.stringify(query)=="{}"){
         this.getHomeList()
-      /*  this.axios.get('https://api.miaoche168.com/api/cars/list/used?include=images&page='+page).then(res=>{
-          this.cars=res.data.data
-          this.nextUrlBase="https://api.miaoche168.com/api/cars/list/used?include=images&page="
-          this.init()
-          this.currentPage=res.data.meta.pagination.current_page
-          this.totalPage=res.data.meta.pagination.total_pages
-          this.cars=res.data.data
-          this.total=res.data.meta.pagination.total
-          this.pageSize=res.data.meta.pagination.per_page
-          this.$router.push({
-            path:"/used",
-            query:{
-              page:page
-            }
-          });
-        }).catch(err=>{
-          console.log(err)
-        })*/
       }else if(query.type=="价格"){
         this.axios.get('https://api.miaoche168.com/api/cars/price/'+ min + '/' + max+'?include=images&page='+page).then(res=>{
           this.cars=res.data.data
@@ -581,5 +563,23 @@
     text-align: center;
     position: relative;
     overflow: hidden;
+  }
+
+
+  .el-pagination.is-background .el-pager li:not(.disabled).active{
+    background: #FF6600;
+    color: #fff;
+  }
+  .el-pagination.is-background .el-pager li:not(.disabled):hover{
+    color: #fff;
+    background-color: #FF6600;
+  }
+  .background .el-pager li:not(.disabled).active {
+    background-color: #FF6600;
+    color: #fff;
+  }
+  .el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-color: #FF6600;
+    color: #fff;
   }
 </style>

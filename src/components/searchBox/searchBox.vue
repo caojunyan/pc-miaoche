@@ -85,17 +85,18 @@
   width: 482px;
   height: 100%;
   float: left;
+  background: #fff;
 }
 .search-left>input{
   width: 318px;
   border: none;
   outline: none;
-  height: 45px;
+  height: 43px;
   line-height: 45px;
   padding-left: 12px;
   font-size: 14px;
-  position: relative;
-  top:-2px;
+ /* position: relative;
+  top:-2px;*/
 }
 .search-left>span{
   width: 152px;
@@ -125,11 +126,11 @@
 .search-right>input{
   border: none;
   outline: none;
-  height: 100%;
+  height: 43px;
   width: 447px;
   padding-left: 33px;
-  position:relative;
-  top:-2px;
+ /* position:relative;
+  top:-2px;*/
   font-size: 14px;
 }
 .search-right>span{
