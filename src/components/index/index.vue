@@ -59,7 +59,7 @@
 <script>
   import myHeader from "../header/header"
   import searchBox from "../searchBox/searchBox"
-  import {getBanner} from '../../api/api'
+  import {getBanner,getHomeList} from '../../api/api'
   export default {
     data(){
       return{
@@ -85,6 +85,7 @@
       indexData(indexData){
         this.usedShow=true
         this.cars=indexData.data
+        this.currentPage=1
         this.totalPage=indexData.meta.pagination.total_pages
         this.init()
       },
@@ -133,16 +134,15 @@
           };
         });
       },
-      // 获取banner图
       // 获取二手车列表
       getHomeList(){
-        this.axios.get('https://api.miaoche168.com/api/home/cars/used').then(res=>{
+        getHomeList().then(res=>{
           this.nextUrlBase="https://api.miaoche168.com/api/home/cars/used?page="
-          this.totalPage=res.data.meta.pagination.total_pages
-          this.currentPage=res.data.meta.pagination.current_page
-          this.total=res.data.meta.pagination.total
-          this.pageSize=res.data.meta.pagination.per_page
-          this.cars=res.data.data
+          this.totalPage=res.meta.pagination.total_pages
+          this.currentPage=res.meta.pagination.current_page
+          this.total=res.meta.pagination.total
+          this.pageSize=res.meta.pagination.per_page
+          this.cars=res.data
           this.init()
           this.$router.push({
             path:"/index",
@@ -151,8 +151,6 @@
                type:"index",*/
             }
           });
-        }).catch(err=>{
-          alert("网络错误")
         })
       },
       // 查看更多
@@ -234,6 +232,10 @@
             id: id
           }
         })
+      },
+      // 刷新的处理
+      refrensh(){
+
       }
     },
     mounted(){

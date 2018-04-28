@@ -120,7 +120,7 @@
           this.$router.push({
             path:"/used",
             query:{
-             /* type:"used"*/
+              type:"used"
             }
           });
           this.init()
@@ -285,6 +285,24 @@
       var carType=query.value
       if(JSON.stringify(query)=="{}"){
         this.getHomeList()
+      /*  this.axios.get('https://api.miaoche168.com/api/cars/list/used?include=images&page='+page).then(res=>{
+          this.cars=res.data.data
+          this.nextUrlBase="https://api.miaoche168.com/api/cars/list/used?include=images&page="
+          this.init()
+          this.currentPage=res.data.meta.pagination.current_page
+          this.totalPage=res.data.meta.pagination.total_pages
+          this.cars=res.data.data
+          this.total=res.data.meta.pagination.total
+          this.pageSize=res.data.meta.pagination.per_page
+          this.$router.push({
+            path:"/used",
+            query:{
+              page:page
+            }
+          });
+        }).catch(err=>{
+          console.log(err)
+        })*/
       }else if(query.type=="价格"){
         this.axios.get('https://api.miaoche168.com/api/cars/price/'+ min + '/' + max+'?include=images&page='+page).then(res=>{
           this.cars=res.data.data
@@ -364,6 +382,25 @@
           this.init()
         })
       }else if(query.type="used"){
+        this.axios.get('https://api.miaoche168.com/api/cars/list/used?include=images&page='+page).then(res=>{
+          this.cars=res.data.data
+          this.nextUrlBase="https://api.miaoche168.com/api/cars/list/used?include=images&page="
+          this.init()
+          this.currentPage=res.data.meta.pagination.current_page
+          this.totalPage=res.data.meta.pagination.total_pages
+          this.cars=res.data.data
+          this.total=res.data.meta.pagination.total
+          this.pageSize=res.data.meta.pagination.per_page
+          this.$router.push({
+            path:"/used",
+            query:{
+              page:page,
+              type:'used'
+            }
+          });
+        }).catch(err=>{
+          console.log(err)
+        })
       }
     }
   }

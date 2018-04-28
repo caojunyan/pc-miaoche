@@ -5,7 +5,7 @@
       <router-link to="/index">首页</router-link>
     </li>
     <li @click="toUsed">
-      <router-link to="/used">优选二手车</router-link>
+      <router-link to="/used?page=1&type=used">优选二手车</router-link>
     </li>
     <li>
       <router-link to="/about">关于我们</router-link>

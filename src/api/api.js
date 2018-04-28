@@ -12,5 +12,9 @@ export const getBanner=()=>{
 
 // 获取首页二手车列表
 export const getHomeList=()=>{
-
+  return axios.get('/home/cars/used').then(res=>{
+   return res.data
+  }).catch(err=>{
+    alert("网络错误")
+  })
 }
