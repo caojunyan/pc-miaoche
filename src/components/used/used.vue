@@ -4,35 +4,6 @@
     <div class="search">
       <searchBox v-on:child-say="listenTo"></searchBox>
     </div>
- <!--   <div class="search-result container" v-if="!usedShow">
-      <div class="result-content" ref="result">
-        <dl v-for="(item,index) in searchResult" :key="index" @click="toDetail(item.id)">
-          <dt>
-            <img v-lazy=baseImg+item.imgUrl alt="" class="car-img">
-            <img src="./hot.png" alt="" class="hot-img">
-          </dt>
-          <dd>
-            <p class="cars-info">{{item.brand}} {{item.type}}</p>
-            <p class="pay">
-              <span>{{item.type}}</span>
-              <i>月付{{item.monthly}}</i>
-              <b>首付{{(item.firPrice)/10000}}万</b>
-            </p>
-          </dd>
-        </dl>
-      </div>
-      <div class="page-wrapper container">
-        <el-pagination
-          @current-change="searchhandleCurrentChange"
-          :current-page="searchcurrentPage"
-          background
-          :page-size="searchpageSize"
-          layout="prev, pager, next"
-          :total="searchtotal"
-          style="text-align: center;margin-top: 40px;padding-bottom: 40px">
-        </el-pagination>
-      </div>
-    </div>-->
     <!--车-->
     <div class="wrapper-container ">
       <div class="sorting-box container">
@@ -374,7 +345,7 @@
         }).catch(err=>{
           console.log(err)
         })
-      }else if(query.type="搜索"){
+      }else if(query.type=="搜索"){
         this.axios.get('https://api.miaoche168.com/api/home/screen?include=images&page='+page+'&value='+this.carName).then(res=>{
           this.cars=res.data.data
           this.nextUrlBase='https://api.miaoche168.com/api/home/screen?include=images&value='+this.carName+'&page='

@@ -59,6 +59,7 @@
 <script>
   import myHeader from "../header/header"
   import searchBox from "../searchBox/searchBox"
+  import {getBanner} from '../../api/api'
   export default {
     data(){
       return{
@@ -84,6 +85,7 @@
       indexData(indexData){
         this.usedShow=true
         this.cars=indexData.data
+        this.totalPage=indexData.meta.pagination.total_pages
         this.init()
       },
       init(){
@@ -114,7 +116,6 @@
               clearInterval(timer);
             };
             isTop = false;
-
           };
           btn.onclick = function() {
             //设置定时器
@@ -128,19 +129,11 @@
                 clearInterval(timer);
               };
               isTop = true;
-
             },30);
           };
         });
       },
       // 获取banner图
-      getBanner(){
-        this.axios.get('https://api.miaoche168.com/api/home/pc/banner').then(res=>{
-          this.bannerImg='https://api.miaoche168.com/'+res.data.data[0].url
-        }).catch(err=>{
-          alert("网络错误")
-        })
-      },
       // 获取二手车列表
       getHomeList(){
         this.axios.get('https://api.miaoche168.com/api/home/cars/used').then(res=>{
@@ -154,8 +147,8 @@
           this.$router.push({
             path:"/index",
             query:{
-             /* page: this.currentPage,
-              type:"index",*/
+              /* page: this.currentPage,
+               type:"index",*/
             }
           });
         }).catch(err=>{
@@ -164,8 +157,8 @@
       },
       // 查看更多
       addMore(){
-        this.nextUrl='https://api.miaoche168.com/api/home/cars/used?page='+(this.currentPage+1)
         if(this.currentPage<=this.totalPage){
+          this.nextUrl='https://api.miaoche168.com/api/home/cars/used?page='+(this.currentPage+1)
           this.currentPage=this.currentPage+1
           this.axios.get(this.nextUrl).then(res=>{
             for(var i=0;i<res.data.data.length;i++){
@@ -175,8 +168,8 @@
             this.$router.push({
               path:"/index",
               query:{
-               /* page: this.currentPage,
-                type:"index",*/
+                /* page: this.currentPage,
+                 type:"index",*/
               }
             });
           }).catch(err=>{
@@ -228,6 +221,7 @@
               carName:this.carName
             }
           });
+          this.currentPage=1
         }).catch(err=>{
           /* alert("网络错误")*/
         })
@@ -243,13 +237,15 @@
       }
     },
     mounted(){
-      this.getBanner()
+      getBanner().then(res=>{
+        this.bannerImg='https://api.miaoche168.com/'+res
+      })
       // 判断参数
       var query=this.$route.query
       var page=query.page
       if(JSON.stringify(query)=="{}"){
         this.getHomeList()
-      }else if(query.type="搜索"){
+      }else if(query.type=="搜索"){
         this.usedShow=false
         this.axios.get('https://api.miaoche168.com/api/home/screen?include=images&page='+page+'&value='+this.carName).then(res=>{
           this.cars=res.data.data
@@ -257,7 +253,6 @@
           this.total=res.data.meta.pagination.total
           this.pageSize=res.data.meta.pagination.per_page
           this.currentPage=res.data.meta.pagination.current_page
-
           this.nextUrlBase='https://api.miaoche168.com/api/home/screen?include=images'+'&value='+this.carName+"&page="
           this.$router.push({
             path:"/index",
@@ -267,15 +262,15 @@
               carName:this.carName
             }
           });
-         this.init()
+          this.init()
         })
-      }else if(query.type="index"){
+      }else if(query.type=="index"){
         this.axios.get('https://api.miaoche168.com/api/home/cars/used?include=images&page='+page).then(res=>{
-             this.nextUrlBase="https://api.miaoche168.com/api/home/cars/used?page="
-             this.totalPage=res.data.meta.pagination.total_pages
-             this.currentPage=res.data.meta.pagination.current_page
-             this.total=res.data.meta.pagination.total
-             this.pageSize=res.data.meta.pagination.per_page
+          this.nextUrlBase="https://api.miaoche168.com/api/home/cars/used?page="
+          this.totalPage=res.data.meta.pagination.total_pages
+          this.currentPage=res.data.meta.pagination.current_page
+          this.total=res.data.meta.pagination.total
+          this.pageSize=res.data.meta.pagination.per_page
           this.cars=res.data.data
           this.init()
           this.$router.push({
@@ -290,29 +285,24 @@
         })
       }
     }
-
   }
 </script>
 
 <style scoped>
-
   /*banner*/
   #slider-3{ width: 100%; height: 322px;}/*这个是demo页面定义尺寸的样式，请根据自己幻灯片的尺寸重新定义。切莫生搬硬套。*/
   #slider-3>img{
     width: 100%;
     height: 100%;
   }
-
   .body{
     width: 100%;
     min-height: 500px;
     background: #F1F1F1;
     padding-top: 58px;
   }
-
   /*搜索结果*/
   .search-result{
-
   }
   .result-content{
     width: 100%;
@@ -337,14 +327,6 @@
     position: relative;
     overflow: hidden;
   }
-
-
-
-
-
-
-
-
   /*cars*/
   .cars-wrapper{
     width: 100%;
@@ -479,6 +461,4 @@
     background: #FF6600;
     cursor: pointer;
   }
-
-
 </style>

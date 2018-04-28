@@ -765,7 +765,7 @@
         padding-top 70px
         .step-img
           width 56px
-          height 15px
+          height 12px
           position relative
           top 31px
         .step
