@@ -4,7 +4,7 @@
     <div class="search">
       <searchBox v-on:child-say="listenTo"></searchBox>
     </div>
-    <div class="search-result container" v-if="!usedShow">
+ <!--   <div class="search-result container" v-if="!usedShow">
       <div class="result-content" ref="result">
         <dl v-for="(item,index) in searchResult" :key="index" @click="toDetail(item.id)">
           <dt>
@@ -32,9 +32,9 @@
           style="text-align: center;margin-top: 40px;padding-bottom: 40px">
         </el-pagination>
       </div>
-    </div>
+    </div>-->
     <!--车-->
-    <div class="wrapper-container " v-if="usedShow">
+    <div class="wrapper-container ">
       <div class="sorting-box container">
         <ul>
           <li class="comprehensive" @click="defaultSort">默认排序</li>
@@ -112,14 +112,6 @@
         nextUrl:'',
         total:0,
         pageSize:0,
-        usedShow:true,
-        searchResult:"",
-        searchnextUrlBase:"",
-        searchcurrentPage:1,
-        searchtotalPage:'',
-        searchnextUrl:'',
-        searchtotal:0,
-        searchpageSize:0,
         brands:"",
       }
     },
@@ -141,19 +133,10 @@
       headerData(headerData){
         this.cars=headerData.data
         this.totalPage=headerData.meta.pagination.total_pages
-
         this.total=headerData.meta.pagination.total
         this.pageSize=headerData.meta.pagination.per_page
         this.currentPage=headerData.meta.pagination.current_page
         this.init()
-       /* this.nextUrlBase="https://api.miaoche168.com/api/cars/list/used?include=images&page="
-        */
-     /*   this.$router.push({
-          path:"/used",
-          query:{
-            /!* type:"used"*!/
-          }
-        });*/
       },
       getHomeList(){
         this.axios.get('https://api.miaoche168.com/api/cars/list/used?include=images').then(res=>{
@@ -176,7 +159,6 @@
       },
       // currentPage 改变时会触发	当前页currentPage
       handleCurrentChange(pageNum){
-        this.cars=""
         this.axios.get(this.nextUrlBase+pageNum).then(res=>{
           this.cars=res.data.data
           this.init()
@@ -196,6 +178,7 @@
               page:pageNum,
               type:type,
               value:this.$route.query.value,
+              carName:this.carName
             }
           });
         }).catch(err=>{
@@ -211,28 +194,18 @@
         })
       },
       listenTo(someData){
-        console.log(someData)
         if(someData.searchCars.data.length===0){
-          this.usedShow=true
           this.$message({
             message:"没有找到您要的车"
           })
         }else{
-          this.usedShow=false
-          this.searchResult=someData.searchCars.data
-          this.searchnextUrlBase="https://api.miaoche168.com/api/home/screen?page="
-          this.searchtotalPage=someData.searchCars.meta.pagination.total_pages
-          this.searchtotal=someData.searchCars.meta.pagination.total
-          this.searchpageSize=someData.searchCars.meta.pagination.per_page
-          this.searchcurrentPage=someData.searchCars.meta.pagination.current_page
-          this.$nextTick(() => {
-            var cars = this.$refs.result.children
-            for (var i = 1; i < cars.length; i++) {
-              if ((i + 1) % 3 == 2) {
-                cars[i].classList.add("middle-padding");
-              }
-            }
-          })
+          this.cars=someData.searchCars.data
+          this.nextUrlBase="https://api.miaoche168.com/api/home/screen?include=images&value="+someData.carName+"&page="
+          this.totalPage=someData.searchCars.meta.pagination.total_pages
+          this.total=someData.searchCars.meta.pagination.total
+          this.pageSize=someData.searchCars.meta.pagination.per_page
+          this.currentPage=someData.searchCars.meta.pagination.current_page
+          this.init()
           this.carName=someData.carName
           this.$router.push({
             path:"/used",
@@ -243,36 +216,6 @@
             }
           });
         }
-      },
-      searchhandleCurrentChange(page){
-        this.searchResult=""
-        this.axios.get('https://api.miaoche168.com/api/home/screen?include=images&value='+this.carName+'&page='+page).then(res=>{
-          this.searchResult=res.data.data
-          this.searchnextUrlBase='https://api.miaoche168.com/api/home/screen?include=images&value='+this.carName+'&page='
-          this.searchtotalPage=res.data.meta.pagination.total_pages
-          this.searchtotal=res.data.meta.pagination.total
-          this.searchpageSize=res.data.meta.pagination.per_page
-          this.searchcurrentPage=res.data.meta.pagination.current_page
-          this.$nextTick(() => {
-            var cars = this.$refs.result.children
-            for (var i = 1; i < cars.length; i++) {
-              if ((i + 1) % 3 == 2) {
-                cars[i].classList.add("middle-padding");
-              }
-            }
-          })
-          this.$router.push({
-            path:"/used",
-            query:{
-              page: this.searchcurrentPage,
-              type:"搜索",
-              carName:this.carName
-            }
-          });
-        }).catch(err=>{
-          console.log(err)
-          /* alert("网络错误")*/
-        })
       },
       // 获取品牌
       getBrands(){
@@ -450,25 +393,6 @@
           this.init()
         })
       }else if(query.type="used"){
-     /*   this.axios.get('https://api.miaoche168.com/api/cars/list/'+query.value+'?include=images&page='+page).then(res=>{
-          this.nextUrlBase='https://api.miaoche168.com/api/cars/list/'+query.value+'?include=images&page='
-          this.totalPage=res.data.meta.pagination.total_pages
-          this.cars=res.data.data
-          this.total=res.data.meta.pagination.total
-          this.pageSize=res.data.meta.pagination.per_page
-          this.currentPage=res.data.meta.pagination.current_page
-          this.$router.push({
-            path:"/used",
-            query:{
-              type:"used",
-              page:this.currentPage,
-              value:query.value
-            }
-          });
-          this.init()
-        }).catch(err=>{
-          alert("网络错误")
-        })*/
       }
     }
   }

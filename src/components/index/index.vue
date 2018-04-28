@@ -9,40 +9,11 @@
       <div class="container">
         <!--搜索框-->
         <searchBox v-on:child-say="listenTo"></searchBox>
-        <!-- 搜索部分-->
-        <div class="search-result" >
-          <div class="result-content" ref="result" v-show="!usedShow" >
-            <dl v-for="(item,index) in searchResult" :key="index" @click="toDetail(item.id)">
-              <dt>
-                <img v-lazy=baseImg+item.imgUrl alt="" class="car-img">
-                <img src="./hot.png" alt="" class="hot-img">
-              </dt>
-              <dd>
-                <p class="cars-info">{{item.brand}} {{item.type}}</p>
-                <p class="pay">
-                  <span>{{item.type}}</span>
-                  <i>月付{{item.monthly}}</i>
-                  <b>首付{{(item.firPrice)/10000}}万</b>
-                </p>
-              </dd>
-            </dl>
-          </div>
-          <div class="page-wrapper container" v-show="!usedShow">
-            <el-pagination
-              @current-change="handleCurrentChange"
-              :current-page="currentPage"
-              background
-              :page-size="pageSize"
-              layout="prev, pager, next"
-              :total="total"
-              style="text-align: center;margin-top: 40px;padding-bottom: 40px">
-            </el-pagination>
-          </div>
-        </div>
+
         <!--列表部分-->
-        <div class="cars-wrapper"  v-show="usedShow">
+        <div class="cars-wrapper"  >
           <!--title-->
-          <div class="cars-title ">
+          <div class="cars-title " v-show="usedShow">
             <h3>优选二手车</h3>
           </div>
           <div class="cars-content" ref="content">
@@ -67,6 +38,18 @@
           <span @click="addMore" v-if="numShow">查看更多</span>
           <span @click="addMore" v-if="!numShow">没有更多数据了</span>
         </div>
+        <!--页码-->
+        <div class="page-wrapper container" v-show="!usedShow">
+          <el-pagination
+            :current-page="currentPage"
+            @current-change="handleCurrentChange"
+            background
+            :page-size="pageSize"
+            layout="prev, pager, next"
+            :total="total"
+            style="text-align: center;margin-top: 40px;padding-bottom: 40px">
+          </el-pagination>
+        </div>
       </div>
     </div>
     <div id="top">返回</div>
@@ -89,15 +72,6 @@
         nextUrl:'',
         numShow:true,
         usedShow:true,
-        titleShow:true,
-        moreShow:true,
-        pageShow:false,
-
-        searchResult:"",
-        searchnextUrlBase:"",
-        searchcurrentPage:1,
-        searchtotalPage:'',
-        searchnextUrl:'',
         total:0,
         pageSize:0,
       }
@@ -213,7 +187,6 @@
         }
       },
       listenTo(someData){
-        console.log(someData)
         if(someData.searchCars.data.length===0){
           this.usedShow=true
           this.$message({
@@ -221,20 +194,13 @@
           })
         }else{
           this.usedShow=false
-          this.searchResult=someData.searchCars.data
-          this.searchnextUrlBase="https://api.miaoche168.com/api/home/screen?page="
-          this.searchtotalPage=someData.searchCars.meta.pagination.total_pages
+          this.cars=someData.searchCars.data
+          this.nextUrlBase="https://api.miaoche168.com/api/home/screen?include=images&value="+someData.carName+"&page="
+          this.totalPage=someData.searchCars.meta.pagination.total_pages
           this.total=someData.searchCars.meta.pagination.total
           this.pageSize=someData.searchCars.meta.pagination.per_page
-          this.searchcurrentPage=someData.searchCars.meta.pagination.current_page
-          this.$nextTick(() => {
-            var cars = this.$refs.result.children
-            for (var i = 1; i < cars.length; i++) {
-              if ((i + 1) % 3 == 2) {
-                cars[i].classList.add("middle-padding");
-              }
-            }
-          })
+          this.currentPage=someData.searchCars.meta.pagination.current_page
+          this.init()
           this.carName=someData.carName
           this.$router.push({
             path:"/index",
@@ -247,22 +213,13 @@
         }
       },
       handleCurrentChange(page){
-        console.log(this.$route.query)
-        this.axios.get(this.searchnextUrlBase+page+'&value='+this.carName).then(res=>{
-          this.searchResult=res.data.data
-          this.searchnextUrlBase="https://api.miaoche168.com/api/home/screen?page="
-          this.searchtotalPage=res.data.meta.pagination.total_pages
+        this.axios.get(this.nextUrlBase+page).then(res=>{
+          this.cars=res.data.data
+          this.totalPage=res.data.meta.pagination.total_pages
           this.total=res.data.meta.pagination.total
           this.pageSize=res.data.meta.pagination.per_page
           this.currentPage=res.data.meta.pagination.current_page
-          this.$nextTick(() => {
-            var cars = this.$refs.result.children
-            for (var i = 1; i < cars.length; i++) {
-              if ((i + 1) % 3 == 2) {
-                cars[i].classList.add("middle-padding");
-              }
-            }
-          })
+          this.init()
           this.$router.push({
             path:"/index",
             query:{
@@ -277,7 +234,6 @@
       },
       // 到详情页
       toDetail(id){
-
         this.$router.push({
           name: "Detail",
           query: {
@@ -294,14 +250,15 @@
       if(JSON.stringify(query)=="{}"){
         this.getHomeList()
       }else if(query.type="搜索"){
+        this.usedShow=false
         this.axios.get('https://api.miaoche168.com/api/home/screen?include=images&page='+page+'&value='+this.carName).then(res=>{
-          this.searchResult=res.data.data
-          this.usedShow=false
-          this.searchnextUrlBase='https://api.miaoche168.com/api/home/screen?include=images'+'&value='+this.carName+"page="
-          this.searchtotalPage=res.data.meta.pagination.total_pages
+          this.cars=res.data.data
+          this.totalPage=res.data.meta.pagination.total_pages
           this.total=res.data.meta.pagination.total
           this.pageSize=res.data.meta.pagination.per_page
           this.currentPage=res.data.meta.pagination.current_page
+
+          this.nextUrlBase='https://api.miaoche168.com/api/home/screen?include=images'+'&value='+this.carName+"&page="
           this.$router.push({
             path:"/index",
             query:{
@@ -310,14 +267,7 @@
               carName:this.carName
             }
           });
-          this.$nextTick(() => {
-            var cars = this.$refs.result.children
-            for (var i = 1; i < cars.length; i++) {
-              if ((i + 1) % 3 == 2) {
-                cars[i].classList.add("middle-padding");
-              }
-            }
-          })
+         this.init()
         })
       }else if(query.type="index"){
         this.axios.get('https://api.miaoche168.com/api/home/cars/used?include=images&page='+page).then(res=>{
